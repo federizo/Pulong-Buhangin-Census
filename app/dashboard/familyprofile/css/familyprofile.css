@@ -1,0 +1,7 @@
+.houseprofile_fam {
+  @apply font-medium;
+}
+
+.houseprofile_span {
+  @apply font-normal italic tracking-wider;
+}

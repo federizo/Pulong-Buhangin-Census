@@ -1,0 +1,42 @@
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsImtpZCI6Ikd2b29ZNHRnbXBBYWF1dUQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3pscnlvb2NxdWtvcmxyaWV5YWZxLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJiOThlNDE5Yi03N2RlLTQ1YzQtODU1Mi01ZWRjODQ0OGUyNzgiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzM2Njk5NzU0LCJpYXQiOjE3MzY2OTYxNTQsImVtYWlsIjoiZW51bWVyYXRvckBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImFnZW50X2lkIjoiMTEwNjI2IiwiYWdlbnRfbmFtZSI6InRlc3QiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicm9sZSI6InVzZXIifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTczNjY5NjE1NH1dLCJzZXNzaW9uX2lkIjoiM2U4NWRjYzAtNzI1MC00ODMzLTlhZTItNzYxNGZjNjMyMjFkIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.Yz9x77OOOD5WSIKJhCbiO_Nk95l3P8Qaui7lbHxDM1U",
+  "token_type": "bearer",
+  "expires_in": 3600,
+  "expires_at": 1736699754,
+  "refresh_token": "Q-Wcxh_vk-RzQzRmaA_nUg",
+  "user": {
+    "id": "b98e419b-77de-45c4-8552-5edc8448e278",
+    "aud": "authenticated",
+    "role": "authenticated",
+    "email": "enumerator@gmail.com",
+    "email_confirmed_at": "2025-01-12T15:09:24.520475Z",
+    "phone": "",
+    "confirmed_at": "2025-01-12T15:09:24.520475Z",
+    "last_sign_in_at": "2025-01-12T15:35:54.2598183Z",
+    "app_metadata": { "provider": "email", "providers": ["email"] },
+    "user_metadata": {
+      "role": "user"
+    },
+    "identities": [
+      {
+        "identity_id": "19ee2ef5-14ff-43b5-b015-c394581dd3cf",
+        "id": "b98e419b-77de-45c4-8552-5edc8448e278",
+        "user_id": "b98e419b-77de-45c4-8552-5edc8448e278",
+        "identity_data": {
+          "email": "enumerator@gmail.com",
+          "email_verified": false,
+          "phone_verified": false,
+          "sub": "b98e419b-77de-45c4-8552-5edc8448e278"
+        },
+        "provider": "email",
+        "last_sign_in_at": "2025-01-12T15:09:24.516338Z",
+        "created_at": "2025-01-12T15:09:24.516389Z",
+        "updated_at": "2025-01-12T15:09:24.516389Z",
+        "email": "enumerator@gmail.com"
+      }
+    ],
+    "created_at": "2025-01-12T15:09:24.515044Z",
+    "updated_at": "2025-01-12T15:35:54.266223Z",
+    "is_anonymous": false
+  }
+}
