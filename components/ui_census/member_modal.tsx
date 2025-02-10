@@ -17,7 +17,6 @@ import { TbChartPieFilled } from "react-icons/tb";
 import { LuAsterisk } from "react-icons/lu";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { toast } from "../ui/use-toast";
-import { updateSingleMember } from "@/lib/api/apiUPDATE";
 
 const AgeComputation = (dob: string): string => {
   const age = moment().diff(dob, "years");
@@ -39,8 +38,7 @@ const MemberModal = ({
   const originalSelectedUser = useRef(selectedUser);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setSelectedUser((prev: any) => ({ ...prev, [name]: value.toUpperCase() }));
+    const { value, name } = e.target;
 
     // Fields that should allow only letters
     const letterOnlyFields = [
@@ -152,9 +150,7 @@ const MemberModal = ({
     setSelectedUser([]);
     setEdit(true);
   };
-  const handleClose = () => {
-    setSelectedUser(null);
-  };
+
   const handleremovemember = () => {
     const updatedFamMembers = formData.FamMember.filter(
       (member: any) => member.MemberId !== selectedUser.MemberId
@@ -175,7 +171,7 @@ const MemberModal = ({
       <div className="bg-white dark:bg-zinc-900 flex-col flex gap-y-5 lg:w-[70vh] w-full h-full rounded-md shadow-md shadow-slate-950 border-[0.5px] py-5 px-3 z-0 overflow-y-auto">
         <div className="flex justify-between items-center">
           <div className="flex w-2 items-center group hover:text-red-500">
-            <button onClick={() => handleClose()} className="text-3xl">
+            <button onClick={() => handleBack()} className="text-3xl">
               <IoChevronBackOutline />
             </button>
             <label className="group-hover:text-base text-[0px]  duration-100">
@@ -217,7 +213,7 @@ const MemberModal = ({
         <div className="flex w-full justify-between items-center">
           <label className="font-semibold  flex items-center gap-2">
             <IoPerson />
-            {selectedUser.FirstName} {selectedUser.LastName}
+            MEMBER {selectedUser.FirstName}
           </label>
         </div>
 
@@ -458,178 +454,170 @@ const MemberModal = ({
           </label>
 
           <div className="flex flex-col gap-5">
-            {/* ELEMENTARY */}
-            <div className="flex gap-2 items-center">
-              <input
-                disabled={edit}
-                type="radio"
-                name="education"
-                value="ELEMENTARY GRADUATE"
-                checked={selectedUser.Education === "ELEMENTARY GRADUATE"}
-                onChange={(e) =>
-                  setSelectedUser((prev: any) => ({
-                    ...prev,
-                    Education: e.target.value,
-                    OtherEducation: "", // Reset other field when another option is selected
-                  }))
-                }
-              />
-              <label className="font-semibold tracking-wider">
-                ELEMENTARY GRADUATE
-              </label>
-            </div>
-
-            {/* HIGH SCHOOL */}
-            <div className="flex gap-2 items-center">
-              <input
-                disabled={edit}
-                type="radio"
-                name="education"
-                value="HIGH SCHOOL GRADUATE"
-                checked={selectedUser.Education === "HIGH SCHOOL GRADUATE"}
-                onChange={(e) =>
-                  setSelectedUser((prev: any) => ({
-                    ...prev,
-                    Education: e.target.value,
-                    OtherEducation: "",
-                  }))
-                }
-              />
-              <label className="font-semibold tracking-wider">
-                HIGH SCHOOL GRADUATE
-              </label>
-            </div>
-
-            {/* COLLEGE */}
-            <div className="flex gap-2 items-center">
-              <input
-                disabled={edit}
-                type="radio"
-                name="education"
-                value="COLLEGE GRADUATE"
-                checked={selectedUser.Education === "COLLEGE GRADUATE"}
-                onChange={(e) =>
-                  setSelectedUser((prev: any) => ({
-                    ...prev,
-                    Education: e.target.value,
-                    OtherEducation: "",
-                  }))
-                }
-              />
-              <label className="font-semibold tracking-wider">
-                COLLEGE GRADUATE
-              </label>
-            </div>
-
-            {/* OTHERS - SHOW TEXTBOX IF SELECTED */}
-            <div className="flex gap-2 items-center">
-              <input
-                disabled={edit}
-                type="radio"
-                name="education"
-                value="OTHERS"
-                checked={selectedUser.Education === "OTHERS"}
-                onChange={(e) =>
-                  setSelectedUser((prev: any) => ({
-                    ...prev,
-                    Education: e.target.value,
-                  }))
-                }
-              />
-              <label className="font-semibold tracking-wider">
-                OTHERS OSC/OSY
-              </label>
-            </div>
-
-            {/* TEXTBOX APPEARS WHEN "OTHERS" IS SELECTED */}
-            {selectedUser.Education === "OTHERS" && (
-              <input
-                disabled={edit}
-                type="text"
-                placeholder="Specify your education level"
-                className="border px-3 py-2 rounded-md uppercase"
-                value={selectedUser.OtherEducation || ""}
-                onChange={(e) => {
-                  const onlyLetters = e.target.value.replace(
-                    /[^A-Za-z\s]/g,
-                    ""
-                  ); // Remove numbers & special characters
-                  setSelectedUser((prev: any) => ({
-                    ...prev,
-                    OtherEducation: onlyLetters.toUpperCase(), // Convert to uppercase
-                  }));
-                }}
-              />
-            )}
-          </div>
-        </>
-        <div className="flex flex-col w-full gap-3">
-          <label className="font-semibold flex items-center gap-2">
-            <GiWhiteBook />
-            RELIGION
-          </label>
-
-          {/* Radio Button Options */}
-          <div className="flex flex-col gap-2">
-            {[
-              { value: "RC", label: "(RC) Roman Catholic" },
-              { value: "INC", label: "(INC) Iglesia Ni Cristo" },
-              { value: "BC", label: "(BC) Bible Baptist Church" },
-              { value: "OTHER", label: "Other" },
-            ].map((religion) => (
-              <label key={religion.value} className="flex items-center gap-2">
+              {/* ELEMENTARY */}
+              <div className="flex gap-2 items-center">
                 <input
                   type="radio"
-                  name="Religion"
-                  value={religion.value}
-                  disabled={edit}
-                  checked={selectedUser.Religion?.value === religion.value}
+                  name="Education"
+                  value="ELEMENTARY GRADUATE"
+                  checked={selectedUser.Education === "ELEMENTARY GRADUATE"}
                   onChange={(e) =>
                     setSelectedUser((prev: any) => ({
                       ...prev,
-                      Religion: {
-                        value: e.target.value,
-                        other:
-                          e.target.value === "OTHER"
-                            ? prev.Religion?.other || ""
-                            : "", // Reset "other" if not selected
-                      },
+                      Education: e.target.value,
+                      OtherEducation: "", // Reset other field when another option is selected
                     }))
                   }
-                  className="w-4 h-4"
                 />
-                {religion.label}
-              </label>
-            ))}
-          </div>
+                <label className="font-semibold tracking-wider">
+                  ELEMENTARY GRADUATE
+                </label>
+              </div>
 
-          {/* Show "Other" Input if Selected */}
-          {selectedUser.Religion?.value === "OTHER" && (
-            <input
-              disabled={edit}
-              type="text"
-              name="otherReligion"
-              placeholder="Enter custom religion"
-              value={selectedUser.Religion?.other || ""}
-              onChange={(e) => {
-                const validText = e.target.value.replace(/[^a-zA-Z\s]/g, ""); // Remove numbers & special characters
-                setSelectedUser((prev: any) => ({
-                  ...prev,
-                  Religion: { ...prev.Religion, other: validText },
-                }));
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && selectedUser.Religion?.other.trim()) {
-                  setSelectedUser((prev: any) => ({
-                    ...prev,
-                    Religion: { ...prev.Religion, value: prev.Religion.other }, // Save input as selected value
-                  }));
-                }
-              }}
-              className="p-2.5 rounded border border-gray-400"
-            />
-          )}
-        </div>
+              {/* HIGH SCHOOL */}
+              <div className="flex gap-2 items-center">
+                <input
+                  type="radio"
+                  name="Education"
+                  value="HIGH SCHOOL GRADUATE"
+                  checked={selectedUser.Education === "HIGH SCHOOL GRADUATE"}
+                  onChange={(e) =>
+                    setSelectedUser((prev: any) => ({
+                      ...prev,
+                      Education: e.target.value,
+                      OtherEducation: "",
+                    }))
+                  }
+                />
+                <label className="font-semibold tracking-wider">
+                  HIGH SCHOOL GRADUATE
+                </label>
+              </div>
+
+              {/* COLLEGE */}
+              <div className="flex gap-2 items-center">
+                <input
+                  type="radio"
+                  name="Education"
+                  value="COLLEGE GRADUATE"
+                  checked={selectedUser.Education === "COLLEGE GRADUATE"}
+                  onChange={(e) =>
+                    setSelectedUser((prev: any) => ({
+                      ...prev,
+                      Education: e.target.value,
+                      OtherEducation: "",
+                    }))
+                  }
+                />
+                <label className="font-semibold tracking-wider">
+                  COLLEGE GRADUATE
+                </label>
+              </div>
+
+              {/* OTHERS - SHOW TEXTBOX IF SELECTED */}
+              <div className="flex gap-2 items-center">
+                <input
+                  type="radio"
+                  name="Education"
+                  value="OTHERS"
+                  checked={selectedUser.Education === "OTHERS"}
+                  onChange={(e) =>
+                    setSelectedUser((prev: any) => ({
+                      ...prev,
+                      Education: e.target.value,
+                    }))
+                  }
+                />
+                <label className="font-semibold tracking-wider">
+                  OTHERS OSC/OSY
+                </label>
+              </div>
+
+              {/* TEXTBOX APPEARS WHEN "OTHERS" IS SELECTED */}
+              {selectedUser.Education === "OTHERS" && (
+                <input
+                  type="text"
+                  placeholder="Specify your education level"
+                  className="border px-3 py-2 rounded-md uppercase"
+                  value={selectedUser.OtherEducation || ""}
+                  onChange={(e) => {
+                    const onlyLetters = e.target.value.replace(
+                      /[^A-Za-z\s]/g,
+                      ""
+                    ); // Remove numbers & special characters
+                    setSelectedUser((prev: any) => ({
+                      ...prev,
+                      OtherEducation: onlyLetters.toUpperCase(), // Convert to uppercase
+                    }));
+                  }}
+                />
+              )}
+            </div>
+        </>
+        <div className="flex flex-col w-full gap-3">
+  <label className="font-semibold flex items-center gap-2">
+    <GiWhiteBook />
+    RELIGION
+  </label>
+
+  {/* Radio Button Options */}
+  <div className="flex flex-col gap-2">
+    {[
+      { value: "RC", label: "(RC) Roman Catholic" },
+      { value: "INC", label: "(INC) Iglesia Ni Cristo" },
+      { value: "BC", label: "(BC) Bible Baptist Church" },
+      { value: "OTHER", label: "Other" },
+    ].map((religion) => (
+      <label key={religion.value} className="flex items-center gap-2">
+        <input
+          type="radio"
+          name="Religion"
+          value={religion.value}
+          disabled={edit}
+          checked={selectedUser.Religion?.value === religion.value}
+          onChange={(e) =>
+            setSelectedUser((prev: any) => ({
+              ...prev,
+              Religion: {
+                value: e.target.value,
+                other: e.target.value === "OTHER" ? prev.Religion?.other || "" : "", // Reset "other" if not selected
+              },
+            }))
+          }
+          className="w-4 h-4"
+        />
+        {religion.label}
+      </label>
+    ))}
+  </div>
+
+  {/* Show "Other" Input if Selected */}
+  {selectedUser.Religion?.value === "OTHER" && (
+    <input
+      disabled={edit}
+      type="text"
+      name="otherReligion"
+      placeholder="Enter custom religion"
+      value={selectedUser.Religion?.other || ""}
+      onChange={(e) => {
+        const validText = e.target.value.replace(/[^a-zA-Z\s]/g, ""); // Remove numbers & special characters
+        setSelectedUser((prev: any) => ({
+          ...prev,
+          Religion: { ...prev.Religion, other: validText },
+        }));
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && selectedUser.Religion?.other.trim()) {
+          setSelectedUser((prev: any) => ({
+            ...prev,
+            Religion: { ...prev.Religion, value: prev.Religion.other }, // Save input as selected value
+          }));
+        }
+      }}
+      className="p-2.5 rounded border border-gray-400"
+    />
+  )}
+</div>
 
         <>
           <div className="flex w-full flex-col gap-5 ">
