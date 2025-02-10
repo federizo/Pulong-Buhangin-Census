@@ -12,7 +12,6 @@ import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { revalidatePath, unstable_noStore } from "next/cache";
 
-
 const CensusModal = ({
   openModal,
   setOpenModal,
@@ -22,7 +21,7 @@ const CensusModal = ({
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   item: any;
 }) => {
-  const [formData, setFormData] = useState<any>({ id: item.id, });
+  const [formData, setFormData] = useState<any>({ id: item.id });
 
   const [memberForm, setMemberForm] = useState({
     MemberId: "",
@@ -74,9 +73,8 @@ const CensusModal = ({
       FamMember: item.FamMember,
       Apartment: item.Apartment[0],
       Note: item.Note,
-    })
-  }, [item])
-
+    });
+  }, [item]);
 
   const [selectedUser, setSelectedUser] = useState<any>([]);
 
@@ -162,8 +160,6 @@ const CensusModal = ({
   return (
     <div className="w-screen h-screen flex justify-center items-center inset-0 fixed backdrop-blur-sm py-[5vh]">
       <div className="bg-white dark:bg-zinc-900 flex-col flex gap-y-5 lg:w-[70vh] w-full h-full rounded-md shadow-md shadow-slate-950 border-[0.5px] py-5 px-3 z-0">
-
-
         {deleting ? (
           <div className="w-[99%] h-full flex flex-col gap-6 p-4 relative">
             {/* Personal Information Group */}

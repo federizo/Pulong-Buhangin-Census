@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaRegFilePdf } from "react-icons/fa";
 import moment from "moment";
 import { jsPDF } from "jspdf";
@@ -14,6 +14,7 @@ const generatePDF = async (ref: any, item: any) => {
       scale: 2, // Increase the scale for higher resolution
       useCORS: true, // Ensure cross-origin images are handled
     });
+    await new Promise((resolve) => setTimeout(resolve, 500)); // Small delay
 
     // Convert the canvas to an image (PNG format)
     const imgData = canvas.toDataURL("image/png", 1.0);
@@ -41,8 +42,9 @@ const generatePDF = async (ref: any, item: any) => {
     pdf.addImage(imgData, "PNG", xOffset, yOffset, scaledWidth, scaledHeight);
 
     // Generate the file name with the house number and current date
-    const fileName = `HOUSEPROFILE_${moment().format("LL")}_${item.HouseProfileId
-      }.pdf`;
+    const fileName = `HOUSEPROFILE_${moment().format("LL")}_${
+      item.HouseProfileId
+    }.pdf`;
 
     // Save the PDF
     pdf.save(fileName);
@@ -51,8 +53,18 @@ const generatePDF = async (ref: any, item: any) => {
   }
 };
 
+// const PDF_LAYOUT = ({ item }: { item: any }) => {
+//   const divRef = React.useRef(null);
+
 const PDF_LAYOUT = ({ item }: { item: any }) => {
-  const divRef = React.useRef(null);
+  const divRef = useRef(null);
+  const [apartmentData, setApartmentData] = useState(item.Apartment || {});
+
+  useEffect(() => {
+    console.log("🚀 PDF_LAYOUT received item:", item);
+    console.log("🏠 Apartment Data in State:", item.Apartment);
+    setApartmentData(item.Apartment || {});
+  }, [item]);
 
   return (
     <div className=" overflow-auto ">
@@ -64,12 +76,11 @@ const PDF_LAYOUT = ({ item }: { item: any }) => {
         PDF
       </button>
 
-
       {/* FORM */}
       <div
         ref={divRef}
         id={"content-to-pdf"}
-        style={{ position: "absolute", top: "-999999999px" }}
+        style={{ position: "absolute", top: "-9999px" }}
         className="p-5 w-[1640.16px] h-[1016.93px] mt-5 bg-white text-black flex flex-col text-12 uppercase items-center justify-center"
       >
         {/* FIRST LAYER */}
@@ -85,7 +96,6 @@ const PDF_LAYOUT = ({ item }: { item: any }) => {
             PULONG BUHANGIN CENSUS FAMILY PROFILE
           </div>
         </div>
-
 
         {/* Location[0] LAYER */}
         <div className="grid grid-cols-1 w-full text-start px-1 border-[1px]  border-t-[0px]  h-auto py-4">
@@ -116,7 +126,7 @@ const PDF_LAYOUT = ({ item }: { item: any }) => {
 
             <div className="_container">
               <label className="">BC NO:</label>
-              <label></label>
+              <label>{item.BcNumber}</label>
             </div>
 
             <div className="_container">
@@ -232,18 +242,21 @@ const PDF_LAYOUT = ({ item }: { item: any }) => {
                       : member.Occupation.value}
                   </label>
                 </div>
-                <div className=" text-center">
-                  {Array.isArray(member.Education) ? (
-                    member.Education.map((edu: any) => (
-                      <span key={edu.elem}>
-                        elem: {edu.elem} HS: {edu.hs} COLLEGE: {edu.college}{" "}
-                        OTHERS: {edu.other}
-                      </span>
-                    ))
-                  ) : (
-                    <span>No data </span>
-                  )}
-                </div>
+                <div className="text-center">
+  {member.Education ? (
+    <span>
+      {typeof member.Education === "object" ? ( // If Education is an object
+        <>
+          elem: {member.Education.elem} HS: {member.Education.hs} COLLEGE: {member.Education.college} OTHERS: {member.Education.other}
+        </>
+      ) : (
+        <>{member.Education}</> // If Education is just a string
+      )}
+    </span>
+  ) : (
+    <span>No data</span>
+  )}
+</div>
                 <div className="text-center">
                   <label className="">{member.Religion.value}</label>
                 </div>
@@ -268,7 +281,7 @@ const PDF_LAYOUT = ({ item }: { item: any }) => {
                 </div>
                 <div className="text-center">
                   <label className="">
-                    <span>{member.Lactating ? "Yes" : "No"}</span>
+                    <span>{member.Lactating === "yes" ? "Yes" : "No"}</span>
                   </label>
                 </div>
               </div>
@@ -374,71 +387,74 @@ const PDF_LAYOUT = ({ item }: { item: any }) => {
         {/* APARTMENT */}
         <div className="mt-1 mb-2 font-semibold">APARTMENT</div>
         <div className="grid grid-cols-3 w-full px-1 border-[1px] text-start h-[80px]">
-          <div className="_container_apartment">
-            <label className="">DOOR NO.: {item.Apartment.DoorNo}</label>
+        <div className="_container_apartment">
+        <label className="">
+  DOOR NO.: {item.Apartment?.[0]?.DoorNo || "N/A"}
+</label>
           </div>
           <div className="_container_apartment ">
-            <label className="">FLOOR NO.: {item.Apartment.FloorNo}</label>
+          <label className="">
+  FLOOR NO.: {item.Apartment?.[0]?.FloorNo || "N/A"}
+</label>
           </div>
           <div className="_container_apartment">
-            <label className="">NAME OF OWNER: {item.Apartment.APTOwner}</label>
+            <label className="">NAME OF OWNER: {item.Apartment?.[0]?.APTOwner || "N/A"}</label>
           </div>
           <div className="_container_apartment ">
-            <label className="">HOUSE TYPE: {item.Apartment.HouseType}</label>
+            <label className="">HOUSE TYPE: {item.Apartment?.[0]?.HouseType || "N/A"}</label>
           </div>
           <div className="_container_apartment ">
             <label className="">
-              HOUSEHOLD TOILETS WITH: {item.Apartment.HouseToilet}
+              HOUSEHOLD TOILETS WITH: {item.Apartment?.[0]?.HouseToilet || "N/A"}
             </label>
           </div>
           <div className="_container_apartment ">
             <label className="">
-              HOUSEHOLD SOURCE OF WATER: {item.Apartment.WaterSource}
+              HOUSEHOLD SOURCE OF WATER: {item.Apartment?.[0]?.WaterSource || "N/A"}
             </label>
           </div>
         </div>
 
-        <div className="mt-1 mb-2 font-semibold">HOSUE HOLD USES</div>
+        <div className="mt-1 mb-2 font-semibold">HOUSE HOLD USES</div>
         <div className="grid grid-cols-3 gap-1 w-full px-1 border-[1px] text-start h-10">
-          <div className="">
-            <label className=" break-words">
-              IODIZED SALT: {item.HouseHoldUses.Iodized ? "Yes" : "NO"}
-            </label>
-          </div>
-          <div className="">
-            <label className=" break-words">
-              FORTIFIED FOOD PRODUCTS:{" "}
-              {item.HouseHoldUses.Fortified ? "Yes" : "NO"}
-            </label>
-          </div>
-          <div className="">
-            <label className=" break-words">
-              GARBAGE COLECTION: {item.HouseHoldUses.Garabage ? "Yes" : "NO"}
-            </label>
-          </div>
+        <div className="">
+    <label className="break-words">
+      IODIZED SALT: {item.HouseHoldUses.Iodized ? "Yes" : "NO"}
+    </label>
+  </div>
+  <div className="">
+    <label className="break-words">
+      FORTIFIED FOOD PRODUCTS: {item.HouseHoldUses.Fortified ? "Yes" : "NO"}
+    </label>
+  </div>
+  <div className="">
+    <label className="break-words">
+      GARBAGE COLLECTION: {item.HouseHoldUses.Garbage ? "Yes" : "NO"}
+    </label>
+  </div>
         </div>
 
         <div className="mt-1 mb-2 font-semibold">PET</div>
         <div className="grid grid-cols-3 gap-1 w-full px-1 border-[1px] text-start h-10">
-          <div className="">
+        <div className="">
             <label className=" break-words">
               CAT:{" "}
-              {item.Pet.NumberofPet === null
+              {item.Pet[0].NumberofPet === null
                 ? "NONE"
-                : item.Pet.NumberofPet?.catno === undefined
+                : item.Pet[0].NumberofPet?.catno === undefined
                   ? "NONE"
-                  : item.Pet.NumberofPet?.catno}{" "}
+                  : item.Pet[0].NumberofPet?.catno}{" "}
             </label>
           </div>
 
           <div className="">
             <label className=" break-words">
               DOG:{" "}
-              {item.Pet.NumberofPet === null
+              {item.Pet[0].NumberofPet === null
                 ? "NONE"
-                : item.Pet.NumberofPet?.dogno === undefined
+                : item.Pet[0].NumberofPet?.dogno === undefined
                   ? "NONE"
-                  : item.Pet.NumberofPet?.dogno}{" "}
+                  : item.Pet[0].NumberofPet?.dogno}{" "}
             </label>
           </div>
 

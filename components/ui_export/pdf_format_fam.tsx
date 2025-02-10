@@ -5,212 +5,171 @@ import { FaRegFilePdf } from "react-icons/fa";
 import moment from "moment";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
+import autoTable from "jspdf-autotable";
 
-const generatePDF = async (ref: any, item: any) => {
-  if (!ref) return;
+const generatePDF = async (ref: HTMLDivElement, item: any) => {
+  if (!ref || !item || item.length === 0) {
+    console.error("❌ Error: No data available for PDF generation.");
+    return;
+  }
+
   try {
-    const canvas = await html2canvas(ref, {
-      scale: 2,
-      useCORS: true,
-    });
+    console.log("✅ Generating PDF...");
 
-    const imgData = canvas.toDataURL("image/png", 1.0);
-    const pdf = new jsPDF("l", "mm", "legal");
+    const pdf = new jsPDF("l", "mm", "legal"); // Landscape, Legal size
 
-    const pdfWidth = 355.6;
-    const pdfHeight = 200;
+    // Extract Table Headers
+    const headers: string[] = [
+      "F/M/L/Sfx",
+      "Relationship",
+      "Birthday",
+      "Age",
+      "Gender",
+      "Religion",
+      "Education",
+      "PWD",
+      "Lactating",
+    ];
 
-    // Calculate scaling ratios
-    const scale = pdfWidth / canvas.width;
-    const scaledHeight = canvas.height * scale;
+    // Extract Table Rows
+    const rows: string[][] = item.map((member: any) => [
+      `${member.FirstName} ${member.MiddleName} ${member.LastName}`,
+      member.FamilyRelationship || "",
+      member.Birthday || "",
+      member.Age?.toString() || "",
+      member.Gender || "",
+      member.Religion && typeof member.Religion === "object"
+      ? member.Religion.value === "OTHER"
+        ? member.Religion.other || "N/A" // ✅ Show custom input if "Other" was selected
+        : member.Religion.value // ✅ Show selected radio button value
+      : member.Religion || "N/A",
+      member.Education || "", // ✅ Added Education
+      member.PWD ? "Yes" : "No", // ✅ Added PWD (boolean handling)
+      member.Lactating === "yes" ? "Yes" : "No", // ✅ FIXED
+    ]);
 
-    // Calculate total pages needed
-    const numberOfPages = Math.ceil(scaledHeight / pdfHeight);
-
-    for (let i = 0; i < numberOfPages; i++) {
-      if (i > 0) {
-        pdf.addPage();
-      }
-
-      // Calculate the position to clip the image
-      const sourceY = (i * pdfHeight / scale);
-
-      pdf.addImage(
-        imgData,
-        "PNG",
-        0,
-        0,
-        pdfWidth,
-        pdfHeight,
-        undefined,
-      );
+    if (headers.length === 0 || rows.length === 0) {
+      console.error("❌ Error: Table data is empty.");
+      return;
     }
 
-    const fileName = `HOUSEPROFILE_${moment().format("LL")}_${item.HouseProfileId}.pdf`;
+    console.log("✅ Table data extracted. Adding to PDF...");
+
+    // Insert table with proper styling
+    autoTable(pdf, {
+      head: [headers],
+      body: rows,
+      theme: "grid",
+      startY: 5,
+      margin: { top: 5, bottom: 3 },
+      styles: {
+        fontSize: 9,
+        cellPadding: 3,
+        halign: "center",
+        lineWidth: 0.5, // Regular row border width
+      },
+      headStyles: {
+        fillColor: [0, 0, 0], // Black background
+        textColor: [255, 255, 255], // White text
+        fontStyle: "bold",
+        lineWidth: 1.5, // Thicker for solid look
+      },
+      pageBreak: "auto",
+    });
+
+    console.log("✅ Saving PDF...");
+
+    // Save the PDF with timestamp
+    const fileName = `HOUSEPROFILE_${moment().format("YYYYMMDD_HHmmss")}.pdf`;
     pdf.save(fileName);
 
+    console.log("✅ PDF should be downloading now.");
   } catch (error) {
-    console.error("Error generating PDF", error);
+    console.error("❌ Error generating PDF:", error);
   }
 };
 
-
-
-
 const PDF_LAYOUT_FAM = ({ item }: { item: any }) => {
-  const divRef = React.useRef(null);
+  const divRef = React.useRef<HTMLDivElement | null>(null);
 
   return (
     <div className=" overflow-auto ">
       <button
-        onClick={() => generatePDF(divRef.current, item)}
-        className="border-[1px] duration-300 bg-red-400 hover:bg-red-500 px-5 py-1 rounded-md flex gap-1 items-center"
+        onClick={() => {
+          if (!divRef.current || !item || item.length === 0) {
+            console.error("❌ Error: No data to export.");
+            return;
+          }
+          generatePDF(divRef.current, item);
+        }}
+        disabled={!item || item.length === 0} // Disable button if no data
+        className={`border-[1px] duration-300 ${
+          item && item.length > 0
+            ? "bg-red-400 hover:bg-red-500"
+            : "bg-gray-400 cursor-not-allowed"
+        } px-5 py-1 rounded-md flex gap-1 items-center`}
       >
         <FaRegFilePdf />
         PDF
       </button>
 
-
       {/* FORM */}
 
       <div
         ref={divRef}
-        id={"content-to-pdf"}
-        style={{ position: "absolute", top: "-999999999px" }}
-        className="p-5 w-[1640.16px] h-auto mt-5 bg-white text-black flex flex-col text-12 uppercase items-center justify-center"
+        className="hidden absolute -left-[9999px]" // Hide from UI but keep for PDF
       >
-        {/* FIRST LAYER */}
-        <div className="border-[1px] w-full flex justify-center items-center h-14 font-bold">
-          <img
-            src={
-              "https://scontent.xx.fbcdn.net/v/t1.15752-9/462636565_479361017790178_497837260792210135_n.png?_nc_cat=111&ccb=1-7&_nc_sid=0024fc&_nc_eui2=AeGJrJIYdLsLDiRVt5g1S87e3W2zO3EwrSfdbbM7cTCtJ3XD1o19EDGHn4NMptf8blCsk_d43CUd1eX1W_4VfKOF&_nc_ohc=0ppUH-B679wQ7kNvgEnVdd2&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.xx&oh=03_Q7cD1QEpw2F_QnhaVdLDJ4SZC9c5HHwMEUqx_Wqp8FgVFgr1Sg&oe=676903E3"
-            }
-            alt="logo"
-            className="h-full"
-          />
-          <div className="tracking-widest items-center justify-center text-2xl h-full">
-            PULONG BUHANGIN CENSUS POPULATION
-          </div>
-        </div>
+        <table className="border-collapse border w-full">
+          <thead>
+            <tr>
+              <th className="border px-2 py-1">F/M/L/Sfx</th>
+              <th className="border px-2 py-1">Relationship</th>
+              <th className="border px-2 py-1">Birthday</th>
+              <th className="border px-2 py-1">Age</th>
+              <th className="border px-2 py-1">Gender</th>
+              <th className="border px-2 py-1">Religion</th> {/* ✅ Added */}
+              <th className="border px-2 py-1">Education</th> {/* ✅ Added */}
+              <th className="border px-2 py-1">PWD</th> {/* ✅ Added */}
+              <th className="border px-2 py-1">Lactating</th> {/* ✅ Added */}
+            </tr>
+          </thead>
+          <tbody>
+            {item?.map((member: any) => (
+              <tr key={member.id}>
+                <td className="border px-2 py-1">{`${member.FirstName} ${member.MiddleName} ${member.LastName}`}</td>
+                <td className="border px-2 py-1">
+                  {member.FamilyRelationship || ""}
+                </td>
+                <td className="border px-2 py-1">{member.Birthday || ""}</td>
+                <td className="border px-2 py-1">
+                  {member.Age?.toString() || ""}
+                </td>
+                <td className="border px-2 py-1">{member.Gender || ""}</td>
+                <td className="border px-2 py-1">
+  {member.Religion && typeof member.Religion === "object"
+    ? member.Religion.value === "OTHER"
+      ? member.Religion.other || "N/A" // ✅ Show "Other" value
+      : member.Religion.value // ✅ Show selected radio button value
+    : member.Religion || "N/A"} {/* ✅ Handle string case or empty value */}
+</td>
 
-        {/* SHOW MEMBER HERE */}
-        <div className="flex flex-col gap-1 w-full">
-          <div className="grid grid-cols-12 w-full border-[1px] font-medium  text-center h-[40px]">
-            <div className=" text-center">
-              <label className=" "> F/M/L/Sfx</label>
-            </div>
-            <div className=" text-center ">
-              <label className=" ">RELATIONSHIP</label>
-            </div>
-            <div className=" text-center">
-              <label className="">BIRTHDAY</label>
-            </div>
-            <div className=" text-center">
-              <label className="">AGE</label>
-            </div>
-            <div className=" text-center">
-              <label className="">GENDER</label>
-            </div>
-            <div className=" text-center">
-              <label className="">CIVIL STATUS</label>
-            </div>
-            <div className=" text-center">
-              <label className="">OCCUPATION</label>
-            </div>
-            <div className=" text-center">
-              <label className="">EDUCATION</label>
-            </div>
-            <div className=" text-center">
-              <label className="">RELIGION</label>
-            </div>
-            <div className=" text-center">
-              <label className="">SECTOR</label>
-            </div>
-            <div className=" text-center">
-              <label className="">PWD</label>
-            </div>
-            <div className=" text-center">
-              <label className="">LACTATING</label>
-            </div>
-          </div>
 
-          {item?.map(
-            (member: any) => (
-              <div
-                key={member.id}
-                className="grid grid-cols-12 w-full px-1 py-3 mt-2 border-[0.5px] items-center "
-              >
-                <div className=" text-center w-full ">
-                  <label className="text-medium text-center">
-                    {member.FirstName} {member.MiddleName} {member.LastName}{" "}
-                    {member.Suffix}
-                  </label>
-                </div>
-                <div className=" text-center w-full ">
-                  <label className=" ">{member.FamilyRelationship}</label>
-                </div>
-                <div className=" text-center">
-                  <label className="">{member.Birthday}</label>
-                </div>
-                <div className="r text-center">
-                  <label className="">{member.Age}</label>
-                </div>
-                <div className=" text-center">
-                  <label className="">{member.Gender}</label>
-                </div>
-                <div className=" text-center">
-                  <label className="">{member.CivilStatus}</label>
-                </div>
-                <div className=" text-center">
-                  <label className="">
-                    {member.Occupation.value === ""
-                      ? "N/A"
-                      : member.Occupation.value}
-                  </label>
-                </div>
-                <div className=" text-center">
-                  {Array.isArray(member.Education) ? (
-                    member.Education.map((edu: any) => (
-                      <span key={edu.elem}>
-                        elem: {edu.elem} HS: {edu.hs} COLLEGE: {edu.college}{" "}
-                        OTHERS: {edu.other}
-                      </span>
-                    ))
-                  ) : (
-                    <span>No data </span>
-                  )}
-                </div>
-                <div className="text-center">
-                  <label className="">{member.Religion.value}</label>
-                </div>
-                <div className=" text-center">
-                  <label className=" text-center">
-                    {Array.isArray(member.Sector) ? (
-                      member.Sector.map((sec: any) => (
-                        <span key={sec.sp}>
-                          SP: {sec.sp} SRC: {sec.src} 4ps: {sec.fourps}
-                        </span>
-                      ))
-                    ) : (
-                      <span>No data </span>
-                    )}
-                  </label>
-                </div>
 
-                <div className=" text-center">
-                  <label className="">
-                    <span>{member.Disability}</span>
-                  </label>
-                </div>
-                <div className="text-center">
-                  <label className="">
-                    <span>{member.Lactating ? "Yes" : "No"}</span>
-                  </label>
-                </div>
-              </div>
-            )
-          )}
-        </div>
+                <td className="border px-2 py-1">
+                  {member.Education && typeof member.Education === "object"
+                    ? member.Education.value || member.Education.other || "N/A"
+                    : "N/A"}
+                </td>
+                <td className="border px-2 py-1">
+                  {member.PWD ? "Yes" : "No"}
+                </td>
+                <td className="border px-2 py-1">
+                  {member.Lactating === "yes" ? "Yes" : "No"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

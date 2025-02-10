@@ -15,12 +15,12 @@ interface Religion {
   value: string;
 }
 
-interface Education {
-  hs: boolean;
-  elem: boolean;
-  other: boolean;
-  college: boolean;
-}
+type Education =
+  | "ELEMENTARY GRADUATE"
+  | "HIGH SCHOOL GRADUATE"
+  | "COLLEGE GRADUATE"
+  | "OTHERS"
+  | "";
 
 interface Occupation {
   other: string;
@@ -71,7 +71,7 @@ interface ExcelData {
   LastName: string;
   MemberId: string;
   Religion: Religion;
-  Education: Education;
+  Education: Education | null;
   FirstName: string;
   Lactating: string;
   Disability: string;
@@ -109,17 +109,18 @@ const flattenData = (data: ExcelData[]) => {
 
     Religion: item.Religion.value.toUpperCase(),
     Other_Religion: item.Religion.other.toUpperCase(),
-    HighSchool: item.Education?.hs ? "YES" : "",
-    Elementary: item.Education?.elem ? "YES" : "",
-    College: item.Education?.college ? "YES" : "",
-    Other_Education: item.Education?.other ? "YES" : "",
+    HighSchool: item.Education === "HIGH SCHOOL GRADUATE" ? "YES" : "",
+    Elementary: item.Education === "ELEMENTARY GRADUATE" ? "YES" : "",
+    College: item.Education === "COLLEGE GRADUATE" ? "YES" : "",
+    Other_Education: item.Education === "OTHERS" ? "YES" : "",
 
     SP: item.Sector.sp ? "YES" : "",
     SRc: item.Sector.src ? "YES" : "",
     Fourps: item.Sector.fourps ? "YES" : "",
 
-    Lactating: item.Lactating ? "YES" : "",
-    LactatingMonths: item.LactatingMonths.toUpperCase(),
+    Lactating: item.Lactating === "yes" ? "YES" : "NO",
+    LactatingMonths:
+      item.Lactating === "yes" ? item.LactatingMonths.toUpperCase() : "N/A",
 
     Disability: item.Disability === null ? "" : item.Disability.toUpperCase(),
 

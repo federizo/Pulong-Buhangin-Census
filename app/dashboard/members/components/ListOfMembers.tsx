@@ -14,11 +14,12 @@ export default function ListOfMembers({ isAdmin, permissions }: Data) {
 
   return (
     <div className="dark:bg-inherit bg-white mx-2 rounded-sm">
-      {permissions
-        ?.filter(
-          (permission: any) =>
-            !permission.member.name.toLowerCase().includes("super_admin")
-        )
+     {permissions
+  ?.filter(
+    (permission: any) =>
+      permission.member?.name && 
+      !permission.member.name.toLowerCase().includes("super_admin")
+  )
 
         ?.map((permission: any, index: number) => (
           <div
