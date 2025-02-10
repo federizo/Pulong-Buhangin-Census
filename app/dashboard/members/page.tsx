@@ -3,7 +3,7 @@ import MemberTable from "./components/MemberTable";
 import SearchMembers from "./components/SearchMembers";
 import CreateMember from "./components/create/CreateMember";
 import { useUserStore } from "@/lib/store/user";
-import { createSupbaseServerClient } from "@/lib/supabase";
+import { createSupbaseServerClient } from "@/lib/supabase/client";
 
 export default async function Members() {
   const user = useUserStore.getState().user;

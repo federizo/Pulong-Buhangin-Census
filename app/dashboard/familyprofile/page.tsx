@@ -53,8 +53,9 @@ export default function FamilyProfile() {
   const spcageParams = searchParams.get("spcage");
 
   const filteredData = membersData?.filter((profile) => {
-    const fullName = `${profile.FirstName || ""} ${profile.MiddleName || ""} ${profile.LastName || ""
-      }`.toLowerCase();
+    const fullName = `${profile.FirstName || ""} ${profile.MiddleName || ""} ${
+      profile.LastName || ""
+    }`.toLowerCase();
 
     // Filter for Gender (checking male or female)
     const matchesGender = genderParams.length
@@ -65,23 +66,23 @@ export default function FamilyProfile() {
     const age = parseInt(profile.Age); // Convert age to a number for comparison
     const matchesAge = ageParams.length
       ? ageParams.some((range) => {
-        switch (range.toLowerCase()) {
-          case "5 below":
-            return age < 5;
-          case "5-10":
-            return age >= 5 && age <= 10;
-          case "10-21":
-            return age >= 10 && age <= 21;
-          case "21-50":
-            return age >= 21 && age <= 50;
-          case "50-80":
-            return age >= 50 && age <= 80;
-          case "80 above":
-            return age > 80;
-          default:
-            return false;
-        }
-      })
+          switch (range.toLowerCase()) {
+            case "5 below":
+              return age < 5;
+            case "5-10":
+              return age >= 5 && age <= 10;
+            case "10-21":
+              return age >= 10 && age <= 21;
+            case "21-50":
+              return age >= 21 && age <= 50;
+            case "50-80":
+              return age >= 50 && age <= 80;
+            case "80 above":
+              return age > 80;
+            default:
+              return false;
+          }
+        })
       : true;
 
     const spcAge = spcageParams ? parseInt(spcageParams) === age : true;
@@ -94,28 +95,28 @@ export default function FamilyProfile() {
     // Filter for Occupation (checking GE, PE, OFW, OTHER)
     const matchesOccupation = occupationParams.length
       ? occupationParams.includes(profile.Occupation.value.toUpperCase()) ||
-      occupationParams.includes(profile.Occupation.other.toUpperCase())
+        occupationParams.includes(profile.Occupation.other.toUpperCase())
       : true;
 
     // Filter for Education (hs, elem, college, other)
     const matchesEducation =
       educationParams.length && profile.Education
         ? educationParams.some(
-          (educ) => profile.Education[educ.toLowerCase()] === true
-        )
+            (educ) => profile.Education[educ.toLowerCase()] === true
+          )
         : true;
 
     // Filter for Religion (RC, INC, BR, other)
     const matchesReligion = religionParams.length
       ? religionParams.includes(profile.Religion.value.toUpperCase()) ||
-      religionParams.includes(profile.Religion.other.toUpperCase())
+        religionParams.includes(profile.Religion.other.toUpperCase())
       : true;
 
     // Filter for Sector (sp, src, fourps)
     const matchesSector = sectorParams.length
       ? sectorParams.some(
-        (sector) => profile.Sector[sector.toLowerCase()] === true
-      )
+          (sector) => profile.Sector[sector.toLowerCase()] === true
+        )
       : true;
 
     // Filter for Lactating (true)
@@ -230,10 +231,7 @@ export default function FamilyProfile() {
             {paginatedData.map((item: any) => (
               <MemberCard item={item} key={item.id} />
             ))}
-
-
           </>
-
         )}
       </div>
       {membersData.length > 20 && (

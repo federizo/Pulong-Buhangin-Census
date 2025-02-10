@@ -24,11 +24,27 @@ import { updateMemberAccountById } from "../../actions";
 const FormSchema = z
   .object({
     email: z.string().email(),
-    password: z.string().optional(),
+    password: z
+      .string()
+      .optional()
+      .refine(
+        (value) =>
+          !value || /[A-Z]/.test(value), // ✅ Require at least one uppercase letter
+        { message: "Password must contain at least one uppercase letter." }
+      )
+      .refine(
+        (value) =>
+          !value || /[!@#$%^&*()_+{}\[\]:;<>,.?/~\\-]/.test(value), // ✅ Require special character
+        { message: "Password must contain at least one special character." }
+      )
+      .refine(
+        (value) => !value || value.length >= 8, // ✅ Enforce minimum length
+        { message: "Password must be at least 8 characters long." }
+      ),
     confirm: z.string().optional(),
   })
   .refine((data) => !data.password || data.confirm === data.password, {
-    message: "Password doesn't match",
+    message: "Passwords do not match",
     path: ["confirm"],
   });
 
@@ -96,51 +112,63 @@ export default function AccountForm({ permission }: { permission: IPermission })
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>New Password</FormLabel>
-              <FormControl>
-                <div className="flex items-center relative">
-                  <Input
-                    {...field}
-                    placeholder="Enter new password"
-                    type={!eye ? "password" : "text"}
-                    className="bg-white dark:bg-slate-700 pr-10"
-                  />
-                  <span
-                    onClick={() => setEye(!eye)}
-                    className="absolute right-3 cursor-pointer"
-                  >
-                    {eye ? <FaEyeSlash /> : <FaEye />}
-                  </span>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+<FormField
+  control={form.control}
+  name="password"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>New Password</FormLabel>
+      <FormControl>
+        <div className="flex items-center relative">
+          <Input
+            {...field}
+            placeholder="Enter new password"
+            type={eye ? "password" : "text"} // ✅ Toggle visibility
+            className="bg-white dark:bg-slate-700 pr-10"
+          />
+          {/* ✅ Eye Icon - Toggle Password Visibility */}
+          <span
+            onClick={() => setEye(!eye)}
+            className="absolute right-3 cursor-pointer"
+          >
+            {eye ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
 
-        <FormField
-          control={form.control}
-          name="confirm"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  placeholder="Confirm password"
-                  type={!eye ? "password" : "text"}
-                  className="bg-white dark:bg-slate-700 pr-10"
-                  />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+<FormField
+  control={form.control}
+  name="confirm"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Confirm Password</FormLabel>
+      <FormControl>
+        <div className="flex items-center relative">
+          <Input
+            {...field}
+            placeholder="Confirm password"
+            type={eye ? "password" : "text"} // ✅ Toggle visibility
+            className="bg-white dark:bg-slate-700 pr-10"
+          />
+          {/* ✅ Eye Icon - Toggle Password Visibility */}
+          <span
+            onClick={() => setEye(!eye)}
+            className="absolute right-3 cursor-pointer"
+          >
+            {eye ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
+
 
         <Button
           type="submit"

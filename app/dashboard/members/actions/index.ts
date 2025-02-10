@@ -72,8 +72,7 @@ export async function createMember(data: any): Promise<any> {
   }
 
   return { success: true, message: "Member created successfully." };
-    // revalidatePath("/dashboard/member");
-
+  // revalidatePath("/dashboard/member");
 }
 
 export async function updateMemberBasicById(
