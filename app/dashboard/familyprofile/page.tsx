@@ -85,6 +85,8 @@ export default function FamilyProfile() {
         })
       : true;
 
+
+      
     const spcAge = spcageParams ? parseInt(spcageParams) === age : true;
 
     // Filter for Civil Status (single, married, li)
@@ -194,12 +196,15 @@ export default function FamilyProfile() {
           <IoIosSearch className="text-2xl" />
           <div className="h-[20px] mr-3 ml-3 w-[1px] dark:bg-zinc-800 bg-black" />
           <input
-            value={searchterm}
-            onChange={(e) => setSearchTerm(e.target.value.toUpperCase())}
-            type="search"
-            className="w-full p-1 rounded-md bg-transparent outline-none "
-            placeholder="Search..."
-          />
+  value={searchterm}
+  onChange={(e) => {
+    setSearchTerm(e.target.value.toUpperCase());
+    setCurrentPage(0); // ✅ Reset pagination when searching
+  }}
+  type="search"
+  className="w-full p-1 rounded-md bg-transparent outline-none "
+  placeholder="Search Name"
+/>
         </div>
       </div>
 
