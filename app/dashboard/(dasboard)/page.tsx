@@ -43,40 +43,28 @@ export default function Dashboard() {
   const datefromParams = searchParams.get("date_from");
 
   const filteredData = censusData?.filter((house) => {
-    // Filter based on search term for House Number and AgentId
-    const HouseNo = house.HouseNumber.includes(searchterm.toUpperCase());
-    const createdBy = house.AgentId.includes(searchterm.toUpperCase());
-
-    // Filter based on Kilometer (km)
-    const kilometer = kmParams.length
-      ? kmParams.includes(house.Location[0].Kilometer)
-      : true;
-
-    // Filter based on Family Class (famclass)
-    const famclass = famclassParams.length
-      ? famclassParams.includes(house.FamClass)
-      : true;
-
+    // Ensure case-insensitive search
+    const houseNoMatch = house.HouseNumber?.toUpperCase().includes(searchterm.toUpperCase());
+    const agentIdMatch = house.AgentId?.toUpperCase().includes(searchterm.toUpperCase());
+  
+    // Allow search to match either HouseNumber OR AgentId
+    const searchMatch = searchterm ? (houseNoMatch || agentIdMatch) : true;
+  
+    // Apply other filters
+    const kilometer = kmParams.length ? kmParams.includes(house.Location[0].Kilometer) : true;
+    const famclass = famclassParams.length ? famclassParams.includes(house.FamClass) : true;
+  
     // Date filtering
     let dateRange = true;
-
     if (datefromParams || datetoParams) {
-      const createdAt = moment(house.created_at); // Convert to moment object
-
-      if (datefromParams) {
-        const dateFrom = moment(datefromParams);
-        dateRange = createdAt.isSameOrAfter(dateFrom); // Filter based on 'date_from'
-      }
-
-      if (datetoParams && dateRange) {
-        const dateTo = moment(datetoParams);
-        dateRange = createdAt.isSameOrBefore(dateTo); // Filter based on 'date_to'
-      }
+      const createdAt = moment(house.created_at);
+      if (datefromParams) dateRange = createdAt.isSameOrAfter(moment(datefromParams));
+      if (datetoParams && dateRange) dateRange = createdAt.isSameOrBefore(moment(datetoParams));
     }
-
-    return HouseNo && createdBy && kilometer && famclass && dateRange;
+  
+    return searchMatch && kilometer && famclass && dateRange;
   });
-
+  
   const pageCount = Math.ceil(filteredData?.length / itemsPerPage);
 
   const handlePageClick = ({ selected }: { selected: number }) => {
@@ -144,17 +132,15 @@ export default function Dashboard() {
             <IoIosSearch className="text-2xl" />
             <div className="h-[20px] mx-3 w-[1px] dark:bg-zinc-800 bg-black" />
             <input
-              value={searchterm}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (/^\d*$/.test(value)) {
-                  setSearchTerm(value);
-                }
-              }}
-              type="search"
-              className="w-full p-1 rounded-md bg-transparent outline-none"
-              placeholder="Search by House No."
-            />
+  value={searchterm}
+  onChange={(e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(0); // ✅ Reset to first page when searching
+  }}
+  type="search"
+  className="w-full p-1 rounded-md bg-transparent outline-none"
+  placeholder="Search by House No."
+/>
           </div>
 
           <button

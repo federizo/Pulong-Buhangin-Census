@@ -126,7 +126,7 @@ const PDF_LAYOUT = ({ item }: { item: any }) => {
 
             <div className="_container">
               <label className="">BC NO:</label>
-              <label></label>
+              <label>{item.BcNumber}</label>
             </div>
 
             <div className="_container">
@@ -388,25 +388,29 @@ const PDF_LAYOUT = ({ item }: { item: any }) => {
         <div className="mt-1 mb-2 font-semibold">APARTMENT</div>
         <div className="grid grid-cols-3 w-full px-1 border-[1px] text-start h-[80px]">
         <div className="_container_apartment">
-            <label className="">DOOR NO.: {item.Apartment[0].DoorNo}</label>
+        <label className="">
+  DOOR NO.: {item.Apartment?.[0]?.DoorNo || "N/A"}
+</label>
           </div>
           <div className="_container_apartment ">
-            <label className="">FLOOR NO.: {item.Apartment[0].FloorNo}</label>
+          <label className="">
+  FLOOR NO.: {item.Apartment?.[0]?.FloorNo || "N/A"}
+</label>
           </div>
           <div className="_container_apartment">
-            <label className="">NAME OF OWNER: {item.Apartment[0].APTOwner}</label>
+            <label className="">NAME OF OWNER: {item.Apartment?.[0]?.APTOwner || "N/A"}</label>
           </div>
           <div className="_container_apartment ">
-            <label className="">HOUSE TYPE: {item.Apartment[0].HouseType}</label>
+            <label className="">HOUSE TYPE: {item.Apartment?.[0]?.HouseType || "N/A"}</label>
           </div>
           <div className="_container_apartment ">
             <label className="">
-              HOUSEHOLD TOILETS WITH: {item.Apartment[0].HouseToilet}
+              HOUSEHOLD TOILETS WITH: {item.Apartment?.[0]?.HouseToilet || "N/A"}
             </label>
           </div>
           <div className="_container_apartment ">
             <label className="">
-              HOUSEHOLD SOURCE OF WATER: {item.Apartment[0].WaterSource}
+              HOUSEHOLD SOURCE OF WATER: {item.Apartment?.[0]?.WaterSource || "N/A"}
             </label>
           </div>
         </div>

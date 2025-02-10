@@ -77,7 +77,7 @@ const CensusApartmentForm = ({
               inputMode="numeric" // ✅ Mobile-friendly numeric keypad
               maxLength={2} // ✅ Limit input to 2 characters
               name="DoorNo"
-              value={formData.Apartment.DoorNo}
+              value={formData?.Apartment.DoorNo}
               onChange={(e) => {
                 const value = e.target.value;
                 if (/^\d{0,2}$/.test(value)) {
@@ -98,7 +98,7 @@ const CensusApartmentForm = ({
               inputMode="numeric" // ✅ Mobile-friendly numeric keypad
               maxLength={2} // ✅ Limit input to 2 characters
               name="FloorNo"
-              value={formData.Apartment.FloorNo}
+              value={formData?.Apartment.FloorNo}
               onChange={(e) => {
                 const value = e.target.value;
                 if (/^\d{0,2}$/.test(value)) {
@@ -119,7 +119,7 @@ const CensusApartmentForm = ({
               required
               type="text"
               name="APTOwner"
-              value={formData.Apartment.APTOwner}
+              value={formData?.Apartment.APTOwner}
               onChange={(e) => {
                 const value = e.target.value.toUpperCase(); // ✅ Convert to uppercase
                 if (/^[A-Z\s]*$/.test(value)) {
@@ -136,7 +136,7 @@ const CensusApartmentForm = ({
             <Select
               disabled={edit}
               name="HouseType"
-              value={formData.Apartment.HouseType}
+              value={formData?.Apartment.HouseType}
               onValueChange={(value) =>
                 setFormData((prev: any) => ({
                   ...prev,
@@ -161,7 +161,7 @@ const CensusApartmentForm = ({
             <Select
               disabled={edit}
               name="HouseToilet"
-              value={formData.Apartment.HouseToilet}
+              value={formData?.Apartment.HouseToilet}
               onValueChange={(value) =>
                 setFormData((prev: any) => ({
                   ...prev,
@@ -186,7 +186,7 @@ const CensusApartmentForm = ({
             <Select
               disabled={edit}
               name="WaterSource"
-              value={formData.Apartment.WaterSource}
+              value={formData?.Apartment.WaterSource}
               onValueChange={(value) =>
                 setFormData((prev: any) => ({
                   ...prev,
