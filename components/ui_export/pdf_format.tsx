@@ -388,6 +388,7 @@ const PDF_LAYOUT = ({ item }: { item: any }) => {
         <div className="mt-1 mb-2 font-semibold">APARTMENT</div>
         <div className="grid grid-cols-3 w-full px-1 border-[1px] text-start h-[80px]">
         <div className="_container_apartment">
+<<<<<<< HEAD
         <label className="">
   DOOR NO.: {item.Apartment?.[0]?.DoorNo || "N/A"}
 </label>
@@ -406,11 +407,31 @@ const PDF_LAYOUT = ({ item }: { item: any }) => {
           <div className="_container_apartment ">
             <label className="">
               HOUSEHOLD TOILETS WITH: {item.Apartment?.[0]?.HouseToilet || "N/A"}
+=======
+            <label className="">DOOR NO.: {item.Apartment[0].DoorNo}</label>
+          </div>
+          <div className="_container_apartment ">
+            <label className="">FLOOR NO.: {item.Apartment[0].FloorNo}</label>
+          </div>
+          <div className="_container_apartment">
+            <label className="">NAME OF OWNER: {item.Apartment[0].APTOwner}</label>
+          </div>
+          <div className="_container_apartment ">
+            <label className="">HOUSE TYPE: {item.Apartment[0].HouseType}</label>
+          </div>
+          <div className="_container_apartment ">
+            <label className="">
+              HOUSEHOLD TOILETS WITH: {item.Apartment[0].HouseToilet}
+>>>>>>> 1e2c58248942ab05c05f46d30f6dc7730f2880d0
             </label>
           </div>
           <div className="_container_apartment ">
             <label className="">
+<<<<<<< HEAD
               HOUSEHOLD SOURCE OF WATER: {item.Apartment?.[0]?.WaterSource || "N/A"}
+=======
+              HOUSEHOLD SOURCE OF WATER: {item.Apartment[0].WaterSource}
+>>>>>>> 1e2c58248942ab05c05f46d30f6dc7730f2880d0
             </label>
           </div>
         </div>
