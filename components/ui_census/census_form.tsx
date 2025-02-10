@@ -47,6 +47,8 @@ const CensusForm = ({
       FamilyRelationship,
       Birthday,
       Gender,
+      Occupation,
+      Education,
       CivilStatus,
       Weight,
       Height,
@@ -72,6 +74,7 @@ const CensusForm = ({
       FamilyRelationship.trim() !== "" &&
       Birthday.trim() !== "" &&
       Gender.trim() !== "" &&
+      Education.trim() !== "" &&
       CivilStatus.trim() !== "";
 
     if (!check) {
@@ -93,11 +96,11 @@ const CensusForm = ({
         Gender: "",
         CivilStatus: "",
         Occupation: { value: "", other: "", position: "" },
-        Eduction: { elem: false, hs: false, college: false, other: false },
+        Education: { elem: false, hs: false, college: false, other: false },
         Religion: { value: "", other: "" },
         Sector: { src: false, sp: false, fourps: false },
         Lactating: false,
-        LactatingMonths: 0,
+        LactatingMonths: "",
         Immunization: "",
         Disability: "",
         Weight: "",
@@ -126,7 +129,8 @@ const CensusForm = ({
   const handleIncome = (e: any) => {
     let income = e.target.value.replace(/[^0-9]/g, "");
 
-    const famClass = income <= 21194 ? "low" : income <= 131484 ? "mid" : "high";
+    const famClass =
+      income <= 21194 ? "low" : income <= 131484 ? "mid" : "high";
     // Update the form data state
     setFormData((prev: any) => ({
       ...prev,
@@ -249,27 +253,28 @@ const CensusForm = ({
             />
           </div>
           <div className="flex w-full flex-col gap-2">
-  <label className="font-semibold tracking-wider">STREET:</label>
-  <input
-    value={formData.Location.Street}
-    type="text"
-    disabled={edit}
-    onChange={(e) => {
-      const input = e.target.value.toUpperCase();
-      if (/^[A-Z\s]*$/.test(input)) { // Allow only uppercase letters and spaces
-        setFormData((prev: any) => ({
-          ...prev,
-          Location: {
-            ...prev.Location,
-            Street: input,
-          },
-        }));
-      }
-    }}
-    name="housenumber"
-    className="border-[0.5px] bg-transparent p-2 h-fit w-full rounded"
-  />
-</div>
+            <label className="font-semibold tracking-wider">STREET:</label>
+            <input
+              value={formData.Location.Street}
+              type="text"
+              disabled={edit}
+              onChange={(e) => {
+                const input = e.target.value.toUpperCase();
+                if (/^[A-Z\s]*$/.test(input)) {
+                  // Allow only uppercase letters and spaces
+                  setFormData((prev: any) => ({
+                    ...prev,
+                    Location: {
+                      ...prev.Location,
+                      Street: input,
+                    },
+                  }));
+                }
+              }}
+              name="housenumber"
+              className="border-[0.5px] bg-transparent p-2 h-fit w-full rounded"
+            />
+          </div>
           <div className="flex w-full flex-col gap-2  ">
             <label className="font-semibold tracking-wider">SUBD:</label>
             <input
@@ -278,17 +283,16 @@ const CensusForm = ({
               disabled={edit}
               onChange={(e) => {
                 const input = e.target.value.toUpperCase();
-                if (/^[A-Z\s]*$/.test(input)) { 
+                if (/^[A-Z\s]*$/.test(input)) {
                   setFormData((prev: any) => ({
                     ...prev,
                     Location: {
                       ...prev.Location, // Preserve other properties of the first Location object
                       SubdivisionName: e.target.value.toUpperCase(), // Update only the Street property
                     },
-                  }))
+                  }));
                 }
               }}
-                
               name="housenumber"
               className=" border-[0.5px] bg-transparent p-2 h-fit w-full rounded"
             />
@@ -404,7 +408,7 @@ const CensusForm = ({
               </div>
             </>
           )}
-            <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
+          <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
 
           <h1
             id="targetDiv"
@@ -454,7 +458,7 @@ const CensusForm = ({
               )}
             </div>
           )}
-            <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
+          <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
 
           <div className="mt-5">
             <CensusApartment
@@ -605,38 +609,39 @@ const CensusForm = ({
                 }
               />
               <input
-    disabled={edit || !formData.Pet?.TypeofPet?.dog} // Disable if edit mode OR checkbox is unchecked
-    value={formData.Pet?.NumberofPet?.dogno}
-    type="text"
-    name="NumberofPet"
-    onChange={(e) => {
-      const isDogChecked = formData.Pet?.TypeofPet?.dog;
-      let value = e.target.value;
+                disabled={edit || !formData.Pet?.TypeofPet?.dog} // Disable if edit mode OR checkbox is unchecked
+                value={formData.Pet?.NumberofPet?.dogno}
+                type="text"
+                name="NumberofPet"
+                onChange={(e) => {
+                  const isDogChecked = formData.Pet?.TypeofPet?.dog;
+                  let value = e.target.value;
 
-      if (isDogChecked) {
-        // ✅ Allow ONLY numbers when checkbox is checked
-        value = value.replace(/[^1-9]/g, ""); 
-      }
+                  if (isDogChecked) {
+                    // ✅ Allow ONLY numbers when checkbox is checked
+                    value = value.replace(/[^1-9]/g, "");
+                  }
 
-      // Limit to 2 characters max
-      if (value.length <= 2) {
-        setFormData((prev: any) => ({
-          ...prev,
-          Pet: {
-            ...prev.Pet,
-            NumberofPet: {
-              ...prev.Pet.NumberofPet,
-              dogno: value,
-            },
-          },
-        }));
-      }
-    }}
-    className={`border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded no-arrows ${
-      !formData.Pet?.TypeofPet?.dog ? "opacity-50 cursor-not-allowed" : ""
-    }`} // Visual cue when disabled
-  />
-
+                  // Limit to 2 characters max
+                  if (value.length <= 2) {
+                    setFormData((prev: any) => ({
+                      ...prev,
+                      Pet: {
+                        ...prev.Pet,
+                        NumberofPet: {
+                          ...prev.Pet.NumberofPet,
+                          dogno: value,
+                        },
+                      },
+                    }));
+                  }
+                }}
+                className={`border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded no-arrows ${
+                  !formData.Pet?.TypeofPet?.dog
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`} // Visual cue when disabled
+              />
             </div>
 
             <div className="flex gap-2 items-center">
@@ -657,37 +662,39 @@ const CensusForm = ({
                 }
               />
               <input
-    disabled={edit || !formData.Pet?.TypeofPet?.cat} // Disable when unchecked
-    value={formData.Pet?.NumberofPet?.catno}
-    type="text"
-    name="NumberofPet"
-    onChange={(e) => {
-      const isCatChecked = formData.Pet?.TypeofPet?.cat;
-      let value = e.target.value;
+                disabled={edit || !formData.Pet?.TypeofPet?.cat} // Disable when unchecked
+                value={formData.Pet?.NumberofPet?.catno}
+                type="text"
+                name="NumberofPet"
+                onChange={(e) => {
+                  const isCatChecked = formData.Pet?.TypeofPet?.cat;
+                  let value = e.target.value;
 
-      if (isCatChecked) {
-        // ✅ Allow ONLY numbers when checkbox is checked
-        value = value.replace(/[^1-9]/g, "");
-      }
+                  if (isCatChecked) {
+                    // ✅ Allow ONLY numbers when checkbox is checked
+                    value = value.replace(/[^1-9]/g, "");
+                  }
 
-      // Limit to 2 characters max
-      if (value.length <= 2) {
-        setFormData((prev: any) => ({
-          ...prev,
-          Pet: {
-            ...prev.Pet,
-            NumberofPet: {
-              ...prev.Pet.NumberofPet,
-              catno: value,
-            },
-          },
-        }));
-      }
-    }}
-    className={`border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded no-arrows ${
-      !formData.Pet?.TypeofPet?.cat ? "opacity-50 cursor-not-allowed" : ""
-    }`} // Visual cue when disabled
-  />
+                  // Limit to 2 characters max
+                  if (value.length <= 2) {
+                    setFormData((prev: any) => ({
+                      ...prev,
+                      Pet: {
+                        ...prev.Pet,
+                        NumberofPet: {
+                          ...prev.Pet.NumberofPet,
+                          catno: value,
+                        },
+                      },
+                    }));
+                  }
+                }}
+                className={`border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded no-arrows ${
+                  !formData.Pet?.TypeofPet?.cat
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`} // Visual cue when disabled
+              />
             </div>
             <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
 
@@ -705,32 +712,32 @@ const CensusForm = ({
                   </span>
                 </div>
                 <input
-    disabled={edit}
-    value={formData.Vehicle?.fourwheel}
-    type="text"
-    name="fourwheel"
-    onChange={(e) => {
-      let value = e.target.value;
+                  disabled={edit}
+                  value={formData.Vehicle?.fourwheel}
+                  type="text"
+                  name="fourwheel"
+                  onChange={(e) => {
+                    let value = e.target.value;
 
-      // 1️⃣ Allow only digits
-      value = value.replace(/[^0-9]/g, "");
+                    // 1️⃣ Allow only digits
+                    value = value.replace(/[^0-9]/g, "");
 
-      // 2️⃣ Disallow '0' as the first or only digit
-      if (value === "0") return;
+                    // 2️⃣ Disallow '0' as the first or only digit
+                    if (value === "0") return;
 
-      // 3️⃣ Allow '10', '20', '30', etc., when it's two digits
-      if (value.length === 2 && value[0] === "0") return; // Prevent '01', '02', etc.
+                    // 3️⃣ Allow '10', '20', '30', etc., when it's two digits
+                    if (value.length === 2 && value[0] === "0") return; // Prevent '01', '02', etc.
 
-      // 4️⃣ Limit input to 2 digits max
-      if (value.length <= 2) {
-        setFormData((prev: any) => ({
-          ...prev,
-          Vehicle: { ...prev.Vehicle, fourwheel: value },
-        }));
-      }
-    }}
-    className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-  />
+                    // 4️⃣ Limit input to 2 digits max
+                    if (value.length <= 2) {
+                      setFormData((prev: any) => ({
+                        ...prev,
+                        Vehicle: { ...prev.Vehicle, fourwheel: value },
+                      }));
+                    }
+                  }}
+                  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
               </div>
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
@@ -742,34 +749,34 @@ const CensusForm = ({
                   </span>
                 </div>
                 <input
-    disabled={edit}
-    value={formData.Vehicle?.treewheel}
-    type="text"
-    name="treewheel"
-    onChange={(e) => {
-      let value = e.target.value;
+                  disabled={edit}
+                  value={formData.Vehicle?.treewheel}
+                  type="text"
+                  name="treewheel"
+                  onChange={(e) => {
+                    let value = e.target.value;
 
-      // 1️⃣ Allow only digits
-      value = value.replace(/[^0-9]/g, "");
+                    // 1️⃣ Allow only digits
+                    value = value.replace(/[^0-9]/g, "");
 
-      // 2️⃣ Disallow '0' as the first or only digit
-      if (value === "0") return;
+                    // 2️⃣ Disallow '0' as the first or only digit
+                    if (value === "0") return;
 
-      // 3️⃣ Allow '10', '20', '30', etc., when it's two digits
-      if (value.length === 2 && value[0] === "0") return; // Prevent '01', '02', etc.
+                    // 3️⃣ Allow '10', '20', '30', etc., when it's two digits
+                    if (value.length === 2 && value[0] === "0") return; // Prevent '01', '02', etc.
 
-      // 4️⃣ Limit input to 2 digits max
-      if (value.length <= 2) {
-        setFormData((prev: any) => ({
-          ...prev,
-          Vehicle: { ...prev.Vehicle, treewheel: value },
-        }));
-      }
-    }}
-    className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-  />
+                    // 4️⃣ Limit input to 2 digits max
+                    if (value.length <= 2) {
+                      setFormData((prev: any) => ({
+                        ...prev,
+                        Vehicle: { ...prev.Vehicle, treewheel: value },
+                      }));
+                    }
+                  }}
+                  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
               </div>
-              
+
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
                   <label className="text-md lg:text-lg tracking-widest">
@@ -780,32 +787,32 @@ const CensusForm = ({
                   </span>
                 </div>
                 <input
-    disabled={edit}
-    value={formData.Vehicle?.twowheel}
-    type="text"
-    name="twowheel"
-    onChange={(e) => {
-      let value = e.target.value;
+                  disabled={edit}
+                  value={formData.Vehicle?.twowheel}
+                  type="text"
+                  name="twowheel"
+                  onChange={(e) => {
+                    let value = e.target.value;
 
-      // 1️⃣ Allow only digits
-      value = value.replace(/[^0-9]/g, "");
+                    // 1️⃣ Allow only digits
+                    value = value.replace(/[^0-9]/g, "");
 
-      // 2️⃣ Disallow '0' as the first or only digit
-      if (value === "0") return;
+                    // 2️⃣ Disallow '0' as the first or only digit
+                    if (value === "0") return;
 
-      // 3️⃣ Allow '10', '20', '30', etc., when it's two digits
-      if (value.length === 2 && value[0] === "0") return; // Prevent '01', '02', etc.
+                    // 3️⃣ Allow '10', '20', '30', etc., when it's two digits
+                    if (value.length === 2 && value[0] === "0") return; // Prevent '01', '02', etc.
 
-      // 4️⃣ Limit input to 2 digits 
-      if (value.length <= 2) {
-        setFormData((prev: any) => ({
-          ...prev,
-          Vehicle: { ...prev.Vehicle, twowheel: value },
-        }));
-      }
-    }}
-    className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-  />
+                    // 4️⃣ Limit input to 2 digits
+                    if (value.length <= 2) {
+                      setFormData((prev: any) => ({
+                        ...prev,
+                        Vehicle: { ...prev.Vehicle, twowheel: value },
+                      }));
+                    }
+                  }}
+                  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
               </div>
             </div>
             <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
@@ -824,34 +831,34 @@ const CensusForm = ({
                   </span>
                 </div>
                 <input
-  disabled={edit}
-  value={formData.Devices?.smartphone}
-  type="text"
-  name="smartphone"
-  onChange={(e) => {
-    let value = e.target.value;
+                  disabled={edit}
+                  value={formData.Devices?.smartphone}
+                  type="text"
+                  name="smartphone"
+                  onChange={(e) => {
+                    let value = e.target.value;
 
-    // 1️⃣ Allow only digits
-    value = value.replace(/[^0-9]/g, "");
+                    // 1️⃣ Allow only digits
+                    value = value.replace(/[^0-9]/g, "");
 
-    // 2️⃣ Disallow '0' as the first or only digit
-    if (value === "0") return;
+                    // 2️⃣ Disallow '0' as the first or only digit
+                    if (value === "0") return;
 
-    // 3️⃣ Allow '10', '20', etc., but prevent '01', '02', etc.
-    if (value.length === 2 && value[0] === "0") return;
+                    // 3️⃣ Allow '10', '20', etc., but prevent '01', '02', etc.
+                    if (value.length === 2 && value[0] === "0") return;
 
-    // 4️⃣ Limit input to 2 digits max
-    if (value.length <= 2) {
-      setFormData((prev: any) => ({
-        ...prev,
-        Devices: { ...prev.Devices, smartphone: value },
-      }));
-    }
-  }}
-  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-/>
+                    // 4️⃣ Limit input to 2 digits max
+                    if (value.length <= 2) {
+                      setFormData((prev: any) => ({
+                        ...prev,
+                        Devices: { ...prev.Devices, smartphone: value },
+                      }));
+                    }
+                  }}
+                  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
               </div>
-              
+
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
                   <label className="text-md lg:text-lg tracking-widest">
@@ -862,32 +869,32 @@ const CensusForm = ({
                   </span>
                 </div>
                 <input
-  disabled={edit}
-  value={formData.Devices?.computer}
-  type="text"
-  name="computer"
-  onChange={(e) => {
-    let value = e.target.value;
+                  disabled={edit}
+                  value={formData.Devices?.computer}
+                  type="text"
+                  name="computer"
+                  onChange={(e) => {
+                    let value = e.target.value;
 
-    // 1️⃣ Allow only digits
-    value = value.replace(/[^0-9]/g, "");
+                    // 1️⃣ Allow only digits
+                    value = value.replace(/[^0-9]/g, "");
 
-    // 2️⃣ Disallow '0' as the first or only digit
-    if (value === "0") return;
+                    // 2️⃣ Disallow '0' as the first or only digit
+                    if (value === "0") return;
 
-    // 3️⃣ Allow '10', '20', etc., but prevent '01', '02', etc.
-    if (value.length === 2 && value[0] === "0") return;
+                    // 3️⃣ Allow '10', '20', etc., but prevent '01', '02', etc.
+                    if (value.length === 2 && value[0] === "0") return;
 
-    // 4️⃣ Limit input to 2 digits max
-    if (value.length <= 2) {
-      setFormData((prev: any) => ({
-        ...prev,
-        Devices: { ...prev.Devices, computer: value },
-      }));
-    }
-  }}
-  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-/>
+                    // 4️⃣ Limit input to 2 digits max
+                    if (value.length <= 2) {
+                      setFormData((prev: any) => ({
+                        ...prev,
+                        Devices: { ...prev.Devices, computer: value },
+                      }));
+                    }
+                  }}
+                  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
               </div>
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
@@ -899,33 +906,32 @@ const CensusForm = ({
                   </span>
                 </div>
                 <input
-  disabled={edit}
-  value={formData.Devices?.wifi}
-  type="text"
-  name="wifi"
-  onChange={(e) => {
-    let value = e.target.value;
+                  disabled={edit}
+                  value={formData.Devices?.wifi}
+                  type="text"
+                  name="wifi"
+                  onChange={(e) => {
+                    let value = e.target.value;
 
-    // 1️⃣ Allow only digits
-    value = value.replace(/[^0-9]/g, "");
+                    // 1️⃣ Allow only digits
+                    value = value.replace(/[^0-9]/g, "");
 
-    // 2️⃣ Disallow '0' as the first or only digit
-    if (value === "0") return;
+                    // 2️⃣ Disallow '0' as the first or only digit
+                    if (value === "0") return;
 
-    // 3️⃣ Allow '10', '20', etc., but prevent '01', '02', etc.
-    if (value.length === 2 && value[0] === "0") return;
+                    // 3️⃣ Allow '10', '20', etc., but prevent '01', '02', etc.
+                    if (value.length === 2 && value[0] === "0") return;
 
-    // 4️⃣ Limit input to 2 digits max
-    if (value.length <= 2) {
-      setFormData((prev: any) => ({
-        ...prev,
-        Devices: { ...prev.Devices, wifi: value },
-      }));
-    }
-  }}
-  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-/>
-
+                    // 4️⃣ Limit input to 2 digits max
+                    if (value.length <= 2) {
+                      setFormData((prev: any) => ({
+                        ...prev,
+                        Devices: { ...prev.Devices, wifi: value },
+                      }));
+                    }
+                  }}
+                  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
               </div>
             </div>
             <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
@@ -941,32 +947,32 @@ const CensusForm = ({
                   </label>
                 </div>
                 <input
-  disabled={edit}
-  value={formData.Appliances?.aircon}
-  type="text"
-  name="aircon"
-  onChange={(e) => {
-    let value = e.target.value;
+                  disabled={edit}
+                  value={formData.Appliances?.aircon}
+                  type="text"
+                  name="aircon"
+                  onChange={(e) => {
+                    let value = e.target.value;
 
-    // 1️⃣ Allow only digits
-    value = value.replace(/[^0-9]/g, "");
+                    // 1️⃣ Allow only digits
+                    value = value.replace(/[^0-9]/g, "");
 
-    // 2️⃣ Disallow '0' as the first or only digit
-    if (value === "0") return;
+                    // 2️⃣ Disallow '0' as the first or only digit
+                    if (value === "0") return;
 
-    // 3️⃣ Allow '10', '20', etc., but prevent '01', '02', etc.
-    if (value.length === 2 && value[0] === "0") return;
+                    // 3️⃣ Allow '10', '20', etc., but prevent '01', '02', etc.
+                    if (value.length === 2 && value[0] === "0") return;
 
-    // 4️⃣ Limit input to 2 digits max
-    if (value.length <= 2) {
-      setFormData((prev: any) => ({
-        ...prev,
-        Appliances: { ...prev.Appliances, aircon: value },
-      }));
-    }
-  }}
-  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-/>
+                    // 4️⃣ Limit input to 2 digits max
+                    if (value.length <= 2) {
+                      setFormData((prev: any) => ({
+                        ...prev,
+                        Appliances: { ...prev.Appliances, aircon: value },
+                      }));
+                    }
+                  }}
+                  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
               </div>
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
@@ -975,32 +981,32 @@ const CensusForm = ({
                   </label>
                 </div>
                 <input
-  disabled={edit}
-  value={formData.Appliances?.refigerator}
-  type="text"
-  name="refigerator"
-  onChange={(e) => {
-    let value = e.target.value;
+                  disabled={edit}
+                  value={formData.Appliances?.refigerator}
+                  type="text"
+                  name="refigerator"
+                  onChange={(e) => {
+                    let value = e.target.value;
 
-    // 1️⃣ Allow only digits
-    value = value.replace(/[^0-9]/g, "");
+                    // 1️⃣ Allow only digits
+                    value = value.replace(/[^0-9]/g, "");
 
-    // 2️⃣ Disallow '0' as the first or only digit
-    if (value === "0") return;
+                    // 2️⃣ Disallow '0' as the first or only digit
+                    if (value === "0") return;
 
-    // 3️⃣ Allow '10', '20', etc., but prevent '01', '02', etc.
-    if (value.length === 2 && value[0] === "0") return;
+                    // 3️⃣ Allow '10', '20', etc., but prevent '01', '02', etc.
+                    if (value.length === 2 && value[0] === "0") return;
 
-    // 4️⃣ Limit input to 2 digits max
-    if (value.length <= 2) {
-      setFormData((prev: any) => ({
-        ...prev,
-        Appliances: { ...prev.Appliances, refigerator: value },
-      }));
-    }
-  }}
-  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-/>
+                    // 4️⃣ Limit input to 2 digits max
+                    if (value.length <= 2) {
+                      setFormData((prev: any) => ({
+                        ...prev,
+                        Appliances: { ...prev.Appliances, refigerator: value },
+                      }));
+                    }
+                  }}
+                  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
               </div>
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
@@ -1009,32 +1015,32 @@ const CensusForm = ({
                   </label>
                 </div>
                 <input
-  disabled={edit}
-  value={formData.Appliances?.television}
-  type="text"
-  name="television"
-  onChange={(e) => {
-    let value = e.target.value;
+                  disabled={edit}
+                  value={formData.Appliances?.television}
+                  type="text"
+                  name="television"
+                  onChange={(e) => {
+                    let value = e.target.value;
 
-    // 1️⃣ Allow only digits
-    value = value.replace(/[^0-9]/g, "");
+                    // 1️⃣ Allow only digits
+                    value = value.replace(/[^0-9]/g, "");
 
-    // 2️⃣ Disallow '0' as the first or only digit
-    if (value === "0") return;
+                    // 2️⃣ Disallow '0' as the first or only digit
+                    if (value === "0") return;
 
-    // 3️⃣ Allow '10', '20', etc., but prevent '01', '02', etc.
-    if (value.length === 2 && value[0] === "0") return;
+                    // 3️⃣ Allow '10', '20', etc., but prevent '01', '02', etc.
+                    if (value.length === 2 && value[0] === "0") return;
 
-    // 4️⃣ Limit input to 2 digits max
-    if (value.length <= 2) {
-      setFormData((prev: any) => ({
-        ...prev,
-        Appliances: { ...prev.Appliances, television: value },
-      }));
-    }
-  }}
-  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-/>
+                    // 4️⃣ Limit input to 2 digits max
+                    if (value.length <= 2) {
+                      setFormData((prev: any) => ({
+                        ...prev,
+                        Appliances: { ...prev.Appliances, television: value },
+                      }));
+                    }
+                  }}
+                  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
               </div>
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
@@ -1043,32 +1049,35 @@ const CensusForm = ({
                   </label>
                 </div>
                 <input
-  disabled={edit}
-  value={formData.Appliances?.washingmachine}
-  type="text"
-  name="washingmachine"
-  onChange={(e) => {
-    let value = e.target.value;
+                  disabled={edit}
+                  value={formData.Appliances?.washingmachine}
+                  type="text"
+                  name="washingmachine"
+                  onChange={(e) => {
+                    let value = e.target.value;
 
-    // 1️⃣ Allow only digits
-    value = value.replace(/[^0-9]/g, "");
+                    // 1️⃣ Allow only digits
+                    value = value.replace(/[^0-9]/g, "");
 
-    // 2️⃣ Disallow '0' as the first or only digit
-    if (value === "0") return;
+                    // 2️⃣ Disallow '0' as the first or only digit
+                    if (value === "0") return;
 
-    // 3️⃣ Allow '10', '20', etc., but prevent '01', '02', etc.
-    if (value.length === 2 && value[0] === "0") return;
+                    // 3️⃣ Allow '10', '20', etc., but prevent '01', '02', etc.
+                    if (value.length === 2 && value[0] === "0") return;
 
-    // 4️⃣ Limit input to 2 digits max
-    if (value.length <= 2) {
-      setFormData((prev: any) => ({
-        ...prev,
-        Appliances: { ...prev.Appliances, washingmachine: value },
-      }));
-    }
-  }}
-  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-/>
+                    // 4️⃣ Limit input to 2 digits max
+                    if (value.length <= 2) {
+                      setFormData((prev: any) => ({
+                        ...prev,
+                        Appliances: {
+                          ...prev.Appliances,
+                          washingmachine: value,
+                        },
+                      }));
+                    }
+                  }}
+                  className="border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
               </div>
               <div className="flex flex-col w-full items-start gap-2">
                 <div className="flex items-center flex-col">
@@ -1103,23 +1112,23 @@ const CensusForm = ({
                 </span>
               </label>
               <input
-  disabled={edit}
-  value={formData.TotalHouseHoldIncome}
-  type="text"
-  name="TotalHouseHoldIncome"
-  className="bg-transparent p-2 border-[1px] rounded-md"
-  onChange={(e) => {
-    let value = e.target.value;
+                disabled={edit}
+                value={formData.TotalHouseHoldIncome}
+                type="text"
+                name="TotalHouseHoldIncome"
+                className="bg-transparent p-2 border-[1px] rounded-md"
+                onChange={(e) => {
+                  let value = e.target.value;
 
-    // 1️⃣ Allow only numeric characters
-    value = value.replace(/[^0-9]/g, "");
+                  // 1️⃣ Allow only numeric characters
+                  value = value.replace(/[^0-9]/g, "");
 
-    // 2️⃣ Limit input to 7 digits
-    if (value.length <= 7) {
-      handleIncome({ target: { value } }); // Ensure proper event handling
-    }
-  }}
-/>
+                  // 2️⃣ Limit input to 7 digits
+                  if (value.length <= 7) {
+                    handleIncome({ target: { value } }); // Ensure proper event handling
+                  }
+                }}
+              />
             </div>
 
             <div className="flex flex-col gap-3 mt-4 w-auto">

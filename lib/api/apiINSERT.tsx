@@ -1,19 +1,37 @@
 "use server";
 
 import { supabaseAdmin, createSupbaseServerClient } from "../supabase";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 const apiINSERT = async (formData: any, agentName: string, agentId: string) => {
   try {
     const locationID = uuidv4();
-    const houseProfileStatus = await HouseProfileINSERT(formData, locationID, agentName, agentId);
+    const houseProfileStatus = await HouseProfileINSERT(
+      formData,
+      locationID,
+      agentName,
+      agentId
+    );
     const memberStatus = await MemberINSERT(formData, formData.HouseProfileId);
     const locationStatus = await LocationINSERT(formData, locationID);
     const petStatus = await PetINSERT(formData);
-    const apartmentStatus = await ApartmentINSERT(formData)
-    const logStatus = await LogInsert(agentId, agentName, "Insert Census Data", `Insert census data id number ${formData.HouseProfileId}`, formData.HouseProfileId)
+    const apartmentStatus = await ApartmentINSERT(formData);
+    const logStatus = await LogInsert(
+      agentId,
+      agentName,
+      "Insert Census Data",
+      `Insert census data id number ${formData.HouseProfileId}`,
+      formData.HouseProfileId
+    );
 
-    if (houseProfileStatus && memberStatus && locationStatus && petStatus && apartmentStatus && logStatus) {
+    if (
+      houseProfileStatus &&
+      memberStatus &&
+      locationStatus &&
+      petStatus &&
+      apartmentStatus &&
+      logStatus
+    ) {
       console.log("Successfully Uploaded!");
       return true;
     } else {
@@ -28,8 +46,30 @@ const apiINSERT = async (formData: any, agentName: string, agentId: string) => {
 
 export default apiINSERT;
 
-const HouseProfileINSERT = async (formData: any, locationID: string, agentName: string, agentId: string) => {
-  const { ContactNumber, HouseNumber, HouseProfileId, Note, DoYouHave, HouseHoldUses, Vehicle, Devices, Appliances, FamClass, RespondentName, RespondentSignature, TotalHouseHoldIncome, NumberOfFamily, RespondentNumber, BcNumber } = formData;
+const HouseProfileINSERT = async (
+  formData: any,
+  locationID: string,
+  agentName: string,
+  agentId: string
+) => {
+  const {
+    ContactNumber,
+    HouseNumber,
+    HouseProfileId,
+    Note,
+    DoYouHave,
+    HouseHoldUses,
+    Vehicle,
+    Devices,
+    Appliances,
+    FamClass,
+    RespondentName,
+    RespondentSignature,
+    TotalHouseHoldIncome,
+    NumberOfFamily,
+    RespondentNumber,
+    BcNumber,
+  } = formData;
 
   const NoMember = formData.FamMember.length;
 
@@ -69,8 +109,6 @@ const HouseProfileINSERT = async (formData: any, locationID: string, agentName: 
   return true;
 };
 
-
-
 export const MemberINSERT = async (data: any, HouseProfileId: any) => {
   const { FamMember } = data;
   let successfulInserts = 0;
@@ -79,37 +117,37 @@ export const MemberINSERT = async (data: any, HouseProfileId: any) => {
     try {
       // Validate required fields
       if (!member.MemberId || !member.FirstName || !member.LastName) {
-        throw new Error(`Missing required fields for member: ${JSON.stringify(member)}`);
+        throw new Error(
+          `Missing required fields for member: ${JSON.stringify(member)}`
+        );
       }
 
       // Perform the insertion
-      const { error } = await supabaseAdmin
-        .from("FamMember")
-        .insert([
-          {
-            MemberId: member.MemberId,
-            LastName: member.LastName,
-            FirstName: member.FirstName,
-            MiddleName: member.MiddleName,
-            Suffix: member.Suffix,
-            FamilyRelationship: member.FamilyRelationship,
-            Birthday: member.Birthday,
-            Age: member.Age,
-            Gender: member.Gender,
-            Occupation: member.Occupation,
-            Education: member.Education,
-            Religion: member.Religion,
-            Sector: member.Sector,
-            Lactating: member.Lactating,
-            LactatingMonths: member.LactatingMonths,
-            CivilStatus: member.CivilStatus,
-            Disability: member.Disability,
-            Immunization: member.Immunization,
-            Weight: member.Weight,
-            Height: member.Height,
-            HouseProfileId: HouseProfileId,
-          },
-        ]);
+      const { error } = await supabaseAdmin.from("FamMember").insert([
+        {
+          MemberId: member.MemberId,
+          LastName: member.LastName,
+          FirstName: member.FirstName,
+          MiddleName: member.MiddleName,
+          Suffix: member.Suffix,
+          FamilyRelationship: member.FamilyRelationship,
+          Birthday: member.Birthday,
+          Age: member.Age,
+          Gender: member.Gender,
+          Occupation: member.Occupation,
+          Education: member.Education,
+          Religion: member.Religion,
+          Sector: member.Sector,
+          Lactating: member.Lactating,
+          LactatingMonths: member.LactatingMonths,
+          CivilStatus: member.CivilStatus,
+          Disability: member.Disability,
+          Immunization: member.Immunization,
+          Weight: member.Weight,
+          Height: member.Height,
+          HouseProfileId: HouseProfileId,
+        },
+      ]);
 
       if (error) {
         throw new Error(`Supabase error: ${error.message}`);
@@ -132,10 +170,8 @@ export const MemberINSERT = async (data: any, HouseProfileId: any) => {
   return successfulInserts === FamMember.length;
 };
 
-
 const LocationINSERT = async (data: any, locationID: string) => {
   const { Location, HouseProfileId } = data;
-
 
   const { error } = await supabaseAdmin
     .from("Location")
@@ -168,7 +204,7 @@ const PetINSERT = async (data: any) => {
         TypeofPet: data.Pet.TypeofPet,
         NumberofPet: data.Pet.NumberofPet,
         HouseProfileId: data.HouseProfileId,
-        Remarks: data.Remarks
+        Remarks: data.Remarks,
       },
     ])
     .select();
@@ -181,7 +217,6 @@ const PetINSERT = async (data: any) => {
   return true;
 };
 
-
 const ApartmentINSERT = async (data: any) => {
   const { error } = await supabaseAdmin
     .from("Apartment")
@@ -193,7 +228,7 @@ const ApartmentINSERT = async (data: any) => {
         HouseType: data.Apartment.HouseType,
         HouseToilet: data.Apartment.HouseToilet,
         WaterSource: data.Apartment.WaterSource,
-        HouseProfileId: data.HouseProfileId
+        HouseProfileId: data.HouseProfileId,
       },
     ])
     .select();
@@ -203,13 +238,18 @@ const ApartmentINSERT = async (data: any) => {
     return false;
   }
 
-  return true
-}
+  return true;
+};
 
-
-export const LogInsert = async (agent_id: string, agent_name: string, action: string, description: string, data_id: string) => {
+export const LogInsert = async (
+  agent_id: string,
+  agent_name: string,
+  action: string,
+  description: string,
+  data_id: string
+) => {
   try {
-    const supabase = await supabaseAdmin
+    const supabase = await supabaseAdmin;
 
     const { data, error } = await supabase
       .from("Log")
@@ -219,19 +259,17 @@ export const LogInsert = async (agent_id: string, agent_name: string, action: st
           agent_name: agent_name,
           action: action,
           description: description,
-          data_id: data_id
-        }
+          data_id: data_id,
+        },
       ])
-      .select()
+      .select();
 
     if (error) {
-      console.log("Error Message:", error)
-      return false
+      console.log("Error Message:", error);
+      return false;
     }
-    return true
+    return true;
   } catch (error) {
     console.log(error);
-
   }
-
-}
+};

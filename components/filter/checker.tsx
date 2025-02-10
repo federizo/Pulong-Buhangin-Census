@@ -1,108 +1,106 @@
-
 export const checkApartment = (current: any, prev: any) => {
-    const curr = {
-        DoorNo: current.Apartment.DoorNo,
-        FloorNo: current.Apartment.FloorNo,
-        APTOwner: current.Apartment.APTOwner,
-        HouseType: current.Apartment.HouseType,
-        HouseToilet: current.Apartment.HouseToilet,
-        WaterSource: current.Apartment.WaterSource,
-    }
-    const pre = {
-        DoorNo: prev.Apartment.DoorNo,
-        FloorNo: prev.Apartment.FloorNo,
-        APTOwner: prev.Apartment.APTOwner,
-        HouseType: prev.Apartment.HouseType,
-        HouseToilet: prev.Apartment.HouseToilet,
-        WaterSource: prev.Apartment.WaterSource,
-    }
-    if (JSON.stringify(pre) !== JSON.stringify(curr))
-        return true
-    else
-        return false
-}
+  const safeCurrent = current?.Apartment || {}; // Ensure Apartment exists
+  const safePrev = prev?.Apartment || {}; // Ensure Apartment exists
+
+  const curr = {
+    DoorNo: safeCurrent.DoorNo || "", // Default empty string if undefined
+    FloorNo: safeCurrent.FloorNo || "",
+    APTOwner: safeCurrent.APTOwner || "",
+    HouseType: safeCurrent.HouseType || "",
+    HouseToilet: safeCurrent.HouseToilet || "",
+    WaterSource: safeCurrent.WaterSource || "",
+  };
+
+  const pre = {
+    DoorNo: safePrev.DoorNo || "",
+    FloorNo: safePrev.FloorNo || "",
+    APTOwner: safePrev.APTOwner || "",
+    HouseType: safePrev.HouseType || "",
+    HouseToilet: safePrev.HouseToilet || "",
+    WaterSource: safePrev.WaterSource || "",
+  };
+
+  return JSON.stringify(pre) !== JSON.stringify(curr);
+};
 
 export const checkHouseProfile = (current: any, prev: any) => {
-    const curr = {
-        id: current.id,
-        created_at: current.created_at,
-        HouseNumber: current.HouseNumber,
-        ContactNumber: current.ContactNumber,
-        HouseProfileId: current.HouseProfileId,
-        LocationId: current.LocationId,
-        NumberofMembers: current.NumberofMembers,
-        AgentId: current.current,
-        DoYouHave: current.DoYouHave,
-        HouseHoldUses: current.HouseHoldUses,
-    }
-    const pre = {
-        id: prev.id,
-        created_at: prev.created_at,
-        HouseNumber: prev.HouseNumber,
-        ContactNumber: prev.ContactNumber,
-        HouseProfileId: prev.HouseProfileId,
-        LocationId: prev.LocationId,
-        NumberofMembers: prev.NumberofMembers,
-        AgentId: prev.prev,
-        DoYouHave: prev.DoYouHave,
-        HouseHoldUses: prev.HouseHoldUses,
-    }
+  const curr = {
+    id: current.id,
+    created_at: current.created_at,
+    HouseNumber: current.HouseNumber,
+    ContactNumber: current.ContactNumber,
+    HouseProfileId: current.HouseProfileId,
+    LocationId: current.LocationId,
+    NumberofMembers: current.NumberofMembers,
+    AgentId: current.current,
+    DoYouHave: current.DoYouHave,
+    HouseHoldUses: current.HouseHoldUses,
+  };
+  const pre = {
+    id: prev.id,
+    created_at: prev.created_at,
+    HouseNumber: prev.HouseNumber,
+    ContactNumber: prev.ContactNumber,
+    HouseProfileId: prev.HouseProfileId,
+    LocationId: prev.LocationId,
+    NumberofMembers: prev.NumberofMembers,
+    AgentId: prev.prev,
+    DoYouHave: prev.DoYouHave,
+    HouseHoldUses: prev.HouseHoldUses,
+  };
 
-    if (JSON.stringify(pre) !== JSON.stringify(curr))
-        return true
-    else
-        return false
-}
-
+  if (JSON.stringify(pre) !== JSON.stringify(curr)) return true;
+  else return false;
+};
 
 export const checkLocation = (current: any, prev: any) => {
-    const curr = {
-        Street: current.Location.Street,
-        Block: current.Location.Block,
-        Lot: current.Location.Lot,
-        Phase: current.Location.Phase,
-        Kilometer: current.Location.Kilometer,
-        SubdivisionName: current.Location.SubdivisionName,
-    }
-    const pre = {
-        Street: prev.Location.Street,
-        Block: prev.Location.Block,
-        Lot: prev.Location.Lot,
-        Phase: prev.Location.Phase,
-        Kilometer: prev.Location.Kilometer,
-        SubdivisionName: prev.Location.SubdivisionName,
-    }
+  const safeCurrent = current?.Location || {}; // Ensure Location exists
+  const safePrev = prev?.Location || {}; // Ensure Location exists
 
-    if (JSON.stringify(pre) !== JSON.stringify(curr))
-        return true
-    else
-        return false
-}
+  const curr = {
+    Street: safeCurrent.Street || "", // Default empty string if undefined
+    Block: safeCurrent.Block || "",
+    Lot: safeCurrent.Lot || "",
+    Phase: safeCurrent.Phase || "",
+    Kilometer: safeCurrent.Kilometer || "",
+    SubdivisionName: safeCurrent.SubdivisionName || "",
+  };
+
+  const pre = {
+    Street: safePrev.Street || "",
+    Block: safePrev.Block || "",
+    Lot: safePrev.Lot || "",
+    Phase: safePrev.Phase || "",
+    Kilometer: safePrev.Kilometer || "",
+    SubdivisionName: safePrev.SubdivisionName || "",
+  };
+
+  return JSON.stringify(pre) !== JSON.stringify(curr);
+};
 
 export const checkPet = (current: any, prev: any) => {
-    const curr = {
-        TypeofPet: current.Pet.TypeofPet,
-        Remarks: current.Pet.Remarks,
-        NumberofPet: current.Pet.NumberofPet,
-    }
-    const pre = {
-        TypeofPet: prev.Pet.TypeofPet,
-        Remarks: prev.Pet.Remarks,
-        NumberofPet: prev.Pet.NumberofPet,
-    }
+  const safeCurrent = current?.Pet || {}; // Ensure Pet exists
+  const safePrev = prev?.Pet || {}; // Ensure Pet exists
 
-    if (JSON.stringify(pre) !== JSON.stringify(curr))
-        return true
-    else
-        return false
-}
+  const curr = {
+    TypeofPet: safeCurrent.TypeofPet || "", // Default empty string if undefined
+    Remarks: safeCurrent.Remarks || "",
+    NumberofPet: safeCurrent.NumberofPet || 0, // Default to 0 for numbers
+  };
+
+  const pre = {
+    TypeofPet: safePrev.TypeofPet || "",
+    Remarks: safePrev.Remarks || "",
+    NumberofPet: safePrev.NumberofPet || 0, // Default to 0 for numbers
+  };
+
+  return JSON.stringify(pre) !== JSON.stringify(curr);
+};
+
 export const checkFamMember = (current: any, prev: any) => {
-    const curr = current.FamMember
-    const pre = prev.FamMember
+  const curr = current.FamMember;
+  const pre = prev.FamMember;
 
-    if (JSON.stringify(pre) !== JSON.stringify(curr))
-        return true
-    else
-        return false
-}
-
+  if (JSON.stringify(pre) !== JSON.stringify(curr)) return true;
+  else return false;
+};

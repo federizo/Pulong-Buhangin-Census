@@ -417,117 +417,171 @@ const CensusMemberForm = ({
               EDUCATION{" "}
             </label>
 
-            <div className="flex flex-col gap-5 ">
+            <div className="flex flex-col gap-5">
+              {/* ELEMENTARY */}
               <div className="flex gap-2 items-center">
+                <input
+                  type="radio"
+                  name="education"
+                  value="ELEMENTARY GRADUATE"
+                  checked={memberForm.Education === "ELEMENTARY GRADUATE"}
+                  onChange={(e) =>
+                    setMemberForm((prev: any) => ({
+                      ...prev,
+                      Education: e.target.value,
+                      OtherEducation: "", // Reset other field when another option is selected
+                    }))
+                  }
+                />
                 <label className="font-semibold tracking-wider">
                   ELEMENTARY GRADUATE
                 </label>
-                <Checkbox
-                  className="h-6 w-6"
-                  name="elem"
-                  checked={memberForm.Education?.elem}
-                  onCheckedChange={(value: boolean) =>
+              </div>
+
+              {/* HIGH SCHOOL */}
+              <div className="flex gap-2 items-center">
+                <input
+                  type="radio"
+                  name="education"
+                  value="HIGH SCHOOL GRADUATE"
+                  checked={memberForm.Education === "HIGH SCHOOL GRADUATE"}
+                  onChange={(e) =>
                     setMemberForm((prev: any) => ({
                       ...prev,
-                      Education: { ...prev.Education, elem: value }, // Correctly update only the other field
+                      Education: e.target.value,
+                      OtherEducation: "",
                     }))
                   }
                 />
-              </div>
-
-              <div className="flex gap-2 items-center">
                 <label className="font-semibold tracking-wider">
                   HIGH SCHOOL GRADUATE
                 </label>
-                <Checkbox
-                  className="h-6 w-6"
-                  name="hs"
-                  checked={memberForm.Education?.hs}
-                  onCheckedChange={(value: boolean) =>
+              </div>
+
+              {/* COLLEGE */}
+              <div className="flex gap-2 items-center">
+                <input
+                  type="radio"
+                  name="education"
+                  value="COLLEGE GRADUATE"
+                  checked={memberForm.Education === "COLLEGE GRADUATE"}
+                  onChange={(e) =>
                     setMemberForm((prev: any) => ({
                       ...prev,
-                      Education: { ...prev.Education, hs: value }, // Correctly update only the other field
+                      Education: e.target.value,
+                      OtherEducation: "",
                     }))
                   }
                 />
-              </div>
-              <div className="flex gap-2 items-center">
                 <label className="font-semibold tracking-wider">
                   COLLEGE GRADUATE
                 </label>
-                <Checkbox
-                  className="h-6 w-6"
-                  name="collegegrad"
-                  checked={memberForm.Education?.college}
-                  onCheckedChange={(value: boolean) =>
+              </div>
+
+              {/* OTHERS - SHOW TEXTBOX IF SELECTED */}
+              <div className="flex gap-2 items-center">
+                <input
+                  type="radio"
+                  name="education"
+                  value="OTHERS"
+                  checked={memberForm.Education === "OTHERS"}
+                  onChange={(e) =>
                     setMemberForm((prev: any) => ({
                       ...prev,
-                      Education: { ...prev.Education, college: value }, // Correctly update only the other field
+                      Education: e.target.value,
                     }))
                   }
                 />
-              </div>
-              <div className="flex gap-2 items-center">
                 <label className="font-semibold tracking-wider">
                   OTHERS OSC/OSY
                 </label>
-                <Checkbox
-                  className="h-6 w-6"
-                  name="others_osc_osy"
-                  checked={memberForm.Education?.other}
-                  onCheckedChange={(value: boolean) =>
+              </div>
+
+              {/* TEXTBOX APPEARS WHEN "OTHERS" IS SELECTED */}
+              {memberForm.Education === "OTHERS" && (
+                <input
+                  type="text"
+                  placeholder="Specify your education level"
+                  className="border px-3 py-2 rounded-md uppercase"
+                  value={memberForm.OtherEducation || ""}
+                  onChange={(e) => {
+                    const onlyLetters = e.target.value.replace(
+                      /[^A-Za-z\s]/g,
+                      ""
+                    ); // Remove numbers & special characters
                     setMemberForm((prev: any) => ({
                       ...prev,
-                      Education: { ...prev.Education, other: value }, // Correctly update only the other field
-                    }))
-                  }
+                      OtherEducation: onlyLetters.toUpperCase(), // Convert to uppercase
+                    }));
+                  }}
                 />
-              </div>
+              )}
             </div>
           </>
         )}
 
-        <div className="flex w-full flex-col gap-3 ">
-          <label className="font-semibold flex items-center gap-2">
-            <GiWhiteBook />
-            RELIGION
-          </label>
-          <Select
-            name="value"
-            value={memberForm.Religion?.value}
-            onValueChange={(value) =>
-              setMemberForm((prev: any) => ({
-                ...prev,
-                Religion: { ...prev.Religion, value: value },
-              }))
-            }
-          >
-            <SelectTrigger className="w-[180px] rounded">
-              <SelectValue placeholder="Choose Religion" />
-            </SelectTrigger>
-            <SelectContent className="  rounded">
-              <SelectItem value="RC">{"(RC)"} Roman Catholic</SelectItem>
-              <SelectItem value="INC">{"(INC)"} Iglesia Ni Cristo</SelectItem>
-              <SelectItem value="BC">{"(BC)"} Bible Baptist Church</SelectItem>
-              <SelectItem value="OTHER">OTHER</SelectItem>
-            </SelectContent>
-          </Select>
-          {memberForm?.Religion?.value === "OTHER" && (
-            <input
-              type="text"
-              name="other"
-              placeholder="Enter custom religion"
-              value={memberForm.Religion.other}
-              onChange={(e) =>
-                setMemberForm((prev: any) => ({
-                  ...prev,
-                  Religion: { ...prev.Religion, other: e.target.value },
-                }))
-              }
-              className="p-2.5  rounded"
-            />
-          )}
-        </div>
+<div className="flex flex-col w-full gap-3">
+  <label className="font-semibold flex items-center gap-2">
+    <GiWhiteBook />
+    RELIGION
+  </label>
+
+  {/* Radio Button Options */}
+  <div className="flex flex-col gap-2">
+    {[
+      { value: "RC", label: "(RC) Roman Catholic" },
+      { value: "INC", label: "(INC) Iglesia Ni Cristo" },
+      { value: "BC", label: "(BC) Bible Baptist Church" },
+      { value: "OTHER", label: "Other" },
+    ].map((religion) => (
+      <label key={religion.value} className="flex items-center gap-2">
+        <input
+          type="radio"
+          name="Religion"
+          value={religion.value}
+          checked={memberForm.Religion?.value === religion.value}
+          onChange={(e) =>
+            setMemberForm((prev: any) => ({
+              ...prev,
+              Religion: {
+                value: e.target.value,
+                other: e.target.value === "OTHER" ? prev.Religion?.other || "" : "", // Reset "other" if not selected
+              },
+            }))
+          }
+          className="w-4 h-4"
+        />
+        {religion.label}
+      </label>
+    ))}
+  </div>
+
+  {/* Show "Other" Input if Selected */}
+  {memberForm.Religion?.value === "OTHER" && (
+    <input
+      type="text"
+      name="otherReligion"
+      placeholder="Enter custom religion"
+      value={memberForm.Religion?.other || ""}
+      onChange={(e) => {
+        const validText = e.target.value.replace(/[^a-zA-Z\s]/g, ""); // Remove numbers & special characters
+        setMemberForm((prev: any) => ({
+          ...prev,
+          Religion: { ...prev.Religion, other: validText },
+        }));
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && memberForm.Religion?.other.trim()) {
+          setMemberForm((prev: any) => ({
+            ...prev,
+            Religion: { ...prev.Religion, value: prev.Religion.other }, // Save input as selected value
+          }));
+        }
+      }}
+      className="p-2.5 rounded border border-gray-400"
+    />
+  )}
+</div>
         {memberForm.Age >= 5 && (
           <>
             <div className="flex w-full flex-col gap-5 ">
@@ -610,42 +664,65 @@ const CensusMemberForm = ({
                 <label className="font-semibold tracking-wider">
                   LACTATING {"(0-24 MONTHS)"}
                 </label>
-                <Checkbox
-                  className="h-6 w-6"
-                  name="lactatingstatus"
-                  checked={memberForm.Lactating}
-                  onCheckedChange={(value: boolean) =>
-                    setMemberForm((prev: any) => ({
-                      ...prev,
-                      Lactating: value,
-                    }))
-                  }
-                />
+
+                {/* Radio Button for "Yes" */}
+                <label className="flex items-center gap-1">
+                  <input
+                    type="radio"
+                    name="lactatingstatus"
+                    value="yes"
+                    checked={memberForm.Lactating === true} // Ensures correct selection
+                    onChange={() =>
+                      setMemberForm((prev: any) => ({
+                        ...prev,
+                        Lactating: true,
+                        LactatingMonths: "", // Reset input when selected
+                      }))
+                    }
+                    className="h-5 w-5"
+                  />
+                  Yes
+                </label>
+
+                {/* Radio Button for "No" */}
+                <label className="flex items-center gap-1">
+                  <input
+                    type="radio"
+                    name="lactatingstatus"
+                    value="no"
+                    checked={memberForm.Lactating === false} // Ensures correct selection
+                    onChange={() =>
+                      setMemberForm((prev: any) => ({
+                        ...prev,
+                        Lactating: false,
+                        LactatingMonths: "", // Clear months input
+                      }))
+                    }
+                    className="h-5 w-5"
+                  />
+                  No
+                </label>
+
+                {/* Input Field for Months (Visible Only When "Yes" is Selected) */}
                 {memberForm.Lactating && (
                   <input
                     type="text"
                     name="lactatingmonths"
-                    placeholder="Enter Months"
+                    placeholder="Enter Months (0-24)"
                     value={memberForm.LactatingMonths}
                     onChange={(e) => {
-                      let value = e.target.value;
+                      let value = e.target.value.replace(/[^0-9]/g, ""); // Allow only numbers
 
-                      // 1️⃣ Allow only digits
-                      value = value.replace(/[^0-9]/g, "");
+                      if (value.length > 2) return; // Limit to 2 digits
+                      if (parseInt(value, 10) > 24) return; // Max value = 24
 
-                      // 2️⃣ Limit to 2 digits
-                      if (value.length > 2) return;
-
-                      // 3️⃣ Prevent numbers greater than 24
-                      if (parseInt(value, 10) > 24) return;
-
-                      // 4️⃣ Update state with valid value
                       setMemberForm((prev: any) => ({
                         ...prev,
                         LactatingMonths: value,
                       }));
                     }}
-                    className="p-1 border rounded"
+                    className="p-1 border rounded w-[60px] text-center"
+                    maxLength={2} // Extra safeguard
                   />
                 )}
               </div>
@@ -664,7 +741,7 @@ const CensusMemberForm = ({
                 <label className="tracking-widest">BCG</label>
                 <Checkbox
                   className="h-6 w-6"
-                  name="lactatingstatus"
+                  name="BCG"
                   checked={memberForm.Immunization.BCG}
                   onCheckedChange={(value: boolean) =>
                     setMemberForm((prev: any) => ({
