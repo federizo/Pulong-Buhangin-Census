@@ -24,11 +24,10 @@ const CensusApartmentForm = ({
   const [apartment, setApartment] = useState<boolean>(
     formData?.Apartment?.APTOwner ? true : false
   );
-  
+
   useEffect(() => {
     setApartment(formData?.Apartment?.APTOwner ? true : false);
   }, [formData]);
-  
 
   const apartmentHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -50,21 +49,21 @@ const CensusApartmentForm = ({
           APARTMENT
         </h1>
         <Checkbox
-  disabled={edit} // Only disable if `edit` is true
-  className="h-6 w-6 border-2 rounded border-gray-400 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-700 transition-colors duration-300"
-  name="ApartmentStatus"
-  checked={apartment}
-  onCheckedChange={(value: boolean) => {
-    setApartment(value);
-    setFormData((prev: any) => ({
-      ...prev,
-      Apartment: {
-        ...prev.Apartment,
-        APTOwner: value ? "OWNER_NAME" : "", // Adjust based on logic
-      },
-    }));
-  }}
-/>
+          disabled={edit} // Only disable if `edit` is true
+          className="h-6 w-6 border-2 rounded border-gray-400 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-700 transition-colors duration-300"
+          name="ApartmentStatus"
+          checked={apartment}
+          onCheckedChange={(value: boolean) => {
+            setApartment(value);
+            setFormData((prev: any) => ({
+              ...prev,
+              Apartment: {
+                ...prev.Apartment,
+                APTOwner: value ? "OWNER_NAME" : "", // Adjust based on logic
+              },
+            }));
+          }}
+        />
       </div>
       {apartment && (
         <>
@@ -77,11 +76,7 @@ const CensusApartmentForm = ({
               inputMode="numeric" // ✅ Mobile-friendly numeric keypad
               maxLength={2} // ✅ Limit input to 2 characters
               name="DoorNo"
-<<<<<<< HEAD
               value={formData?.Apartment.DoorNo}
-=======
-              value={formData.Apartment.DoorNo}
->>>>>>> 1e2c58248942ab05c05f46d30f6dc7730f2880d0
               onChange={(e) => {
                 const value = e.target.value;
                 if (/^\d{0,2}$/.test(value)) {
@@ -102,11 +97,7 @@ const CensusApartmentForm = ({
               inputMode="numeric" // ✅ Mobile-friendly numeric keypad
               maxLength={2} // ✅ Limit input to 2 characters
               name="FloorNo"
-<<<<<<< HEAD
               value={formData?.Apartment.FloorNo}
-=======
-              value={formData.Apartment.FloorNo}
->>>>>>> 1e2c58248942ab05c05f46d30f6dc7730f2880d0
               onChange={(e) => {
                 const value = e.target.value;
                 if (/^\d{0,2}$/.test(value)) {
@@ -127,11 +118,7 @@ const CensusApartmentForm = ({
               required
               type="text"
               name="APTOwner"
-<<<<<<< HEAD
               value={formData?.Apartment.APTOwner}
-=======
-              value={formData.Apartment.APTOwner}
->>>>>>> 1e2c58248942ab05c05f46d30f6dc7730f2880d0
               onChange={(e) => {
                 const value = e.target.value.toUpperCase(); // ✅ Convert to uppercase
                 if (/^[A-Z\s]*$/.test(value)) {
@@ -148,11 +135,7 @@ const CensusApartmentForm = ({
             <Select
               disabled={edit}
               name="HouseType"
-<<<<<<< HEAD
               value={formData?.Apartment.HouseType}
-=======
-              value={formData.Apartment.HouseType}
->>>>>>> 1e2c58248942ab05c05f46d30f6dc7730f2880d0
               onValueChange={(value) =>
                 setFormData((prev: any) => ({
                   ...prev,
@@ -177,11 +160,7 @@ const CensusApartmentForm = ({
             <Select
               disabled={edit}
               name="HouseToilet"
-<<<<<<< HEAD
               value={formData?.Apartment.HouseToilet}
-=======
-              value={formData.Apartment.HouseToilet}
->>>>>>> 1e2c58248942ab05c05f46d30f6dc7730f2880d0
               onValueChange={(value) =>
                 setFormData((prev: any) => ({
                   ...prev,
@@ -206,11 +185,7 @@ const CensusApartmentForm = ({
             <Select
               disabled={edit}
               name="WaterSource"
-<<<<<<< HEAD
               value={formData?.Apartment.WaterSource}
-=======
-              value={formData.Apartment.WaterSource}
->>>>>>> 1e2c58248942ab05c05f46d30f6dc7730f2880d0
               onValueChange={(value) =>
                 setFormData((prev: any) => ({
                   ...prev,

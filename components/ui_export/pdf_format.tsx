@@ -243,20 +243,23 @@ const PDF_LAYOUT = ({ item }: { item: any }) => {
                   </label>
                 </div>
                 <div className="text-center">
-  {member.Education ? (
-    <span>
-      {typeof member.Education === "object" ? ( // If Education is an object
-        <>
-          elem: {member.Education.elem} HS: {member.Education.hs} COLLEGE: {member.Education.college} OTHERS: {member.Education.other}
-        </>
-      ) : (
-        <>{member.Education}</> // If Education is just a string
-      )}
-    </span>
-  ) : (
-    <span>No data</span>
-  )}
-</div>
+                  {member.Education ? (
+                    <span>
+                      {typeof member.Education === "object" ? ( // If Education is an object
+                        <>
+                          elem: {member.Education.elem} HS:{" "}
+                          {member.Education.hs} COLLEGE:{" "}
+                          {member.Education.college} OTHERS:{" "}
+                          {member.Education.other}
+                        </>
+                      ) : (
+                        <>{member.Education}</> // If Education is just a string
+                      )}
+                    </span>
+                  ) : (
+                    <span>No data</span>
+                  )}
+                </div>
                 <div className="text-center">
                   <label className="">{member.Religion.value}</label>
                 </div>
@@ -387,84 +390,70 @@ const PDF_LAYOUT = ({ item }: { item: any }) => {
         {/* APARTMENT */}
         <div className="mt-1 mb-2 font-semibold">APARTMENT</div>
         <div className="grid grid-cols-3 w-full px-1 border-[1px] text-start h-[80px]">
-        <div className="_container_apartment">
-<<<<<<< HEAD
-        <label className="">
-  DOOR NO.: {item.Apartment?.[0]?.DoorNo || "N/A"}
-</label>
-          </div>
-          <div className="_container_apartment ">
-          <label className="">
-  FLOOR NO.: {item.Apartment?.[0]?.FloorNo || "N/A"}
-</label>
-          </div>
           <div className="_container_apartment">
-            <label className="">NAME OF OWNER: {item.Apartment?.[0]?.APTOwner || "N/A"}</label>
-          </div>
-          <div className="_container_apartment ">
-            <label className="">HOUSE TYPE: {item.Apartment?.[0]?.HouseType || "N/A"}</label>
-          </div>
-          <div className="_container_apartment ">
             <label className="">
-              HOUSEHOLD TOILETS WITH: {item.Apartment?.[0]?.HouseToilet || "N/A"}
-=======
-            <label className="">DOOR NO.: {item.Apartment[0].DoorNo}</label>
-          </div>
-          <div className="_container_apartment ">
-            <label className="">FLOOR NO.: {item.Apartment[0].FloorNo}</label>
-          </div>
-          <div className="_container_apartment">
-            <label className="">NAME OF OWNER: {item.Apartment[0].APTOwner}</label>
-          </div>
-          <div className="_container_apartment ">
-            <label className="">HOUSE TYPE: {item.Apartment[0].HouseType}</label>
-          </div>
-          <div className="_container_apartment ">
-            <label className="">
-              HOUSEHOLD TOILETS WITH: {item.Apartment[0].HouseToilet}
->>>>>>> 1e2c58248942ab05c05f46d30f6dc7730f2880d0
+              DOOR NO.: {item.Apartment?.[0]?.DoorNo || "N/A"}
             </label>
           </div>
           <div className="_container_apartment ">
             <label className="">
-<<<<<<< HEAD
-              HOUSEHOLD SOURCE OF WATER: {item.Apartment?.[0]?.WaterSource || "N/A"}
-=======
-              HOUSEHOLD SOURCE OF WATER: {item.Apartment[0].WaterSource}
->>>>>>> 1e2c58248942ab05c05f46d30f6dc7730f2880d0
+              FLOOR NO.: {item.Apartment?.[0]?.FloorNo || "N/A"}
+            </label>
+          </div>
+          <div className="_container_apartment">
+            <label className="">
+              NAME OF OWNER: {item.Apartment?.[0]?.APTOwner || "N/A"}
+            </label>
+          </div>
+          <div className="_container_apartment ">
+            <label className="">
+              HOUSE TYPE: {item.Apartment?.[0]?.HouseType || "N/A"}
+            </label>
+          </div>
+          <div className="_container_apartment ">
+            <label className="">
+              HOUSEHOLD TOILETS WITH:{" "}
+              {item.Apartment?.[0]?.HouseToilet || "N/A"}
+            </label>
+          </div>
+          <div className="_container_apartment ">
+            <label className="">
+              HOUSEHOLD SOURCE OF WATER:{" "}
+              {item.Apartment?.[0]?.WaterSource || "N/A"}
             </label>
           </div>
         </div>
 
         <div className="mt-1 mb-2 font-semibold">HOUSE HOLD USES</div>
         <div className="grid grid-cols-3 gap-1 w-full px-1 border-[1px] text-start h-10">
-        <div className="">
-    <label className="break-words">
-      IODIZED SALT: {item.HouseHoldUses.Iodized ? "Yes" : "NO"}
-    </label>
-  </div>
-  <div className="">
-    <label className="break-words">
-      FORTIFIED FOOD PRODUCTS: {item.HouseHoldUses.Fortified ? "Yes" : "NO"}
-    </label>
-  </div>
-  <div className="">
-    <label className="break-words">
-      GARBAGE COLLECTION: {item.HouseHoldUses.Garbage ? "Yes" : "NO"}
-    </label>
-  </div>
+          <div className="">
+            <label className="break-words">
+              IODIZED SALT: {item.HouseHoldUses.Iodized ? "Yes" : "NO"}
+            </label>
+          </div>
+          <div className="">
+            <label className="break-words">
+              FORTIFIED FOOD PRODUCTS:{" "}
+              {item.HouseHoldUses.Fortified ? "Yes" : "NO"}
+            </label>
+          </div>
+          <div className="">
+            <label className="break-words">
+              GARBAGE COLLECTION: {item.HouseHoldUses.Garbage ? "Yes" : "NO"}
+            </label>
+          </div>
         </div>
 
         <div className="mt-1 mb-2 font-semibold">PET</div>
         <div className="grid grid-cols-3 gap-1 w-full px-1 border-[1px] text-start h-10">
-        <div className="">
+          <div className="">
             <label className=" break-words">
               CAT:{" "}
               {item.Pet[0].NumberofPet === null
                 ? "NONE"
                 : item.Pet[0].NumberofPet?.catno === undefined
-                  ? "NONE"
-                  : item.Pet[0].NumberofPet?.catno}{" "}
+                ? "NONE"
+                : item.Pet[0].NumberofPet?.catno}{" "}
             </label>
           </div>
 
@@ -474,8 +463,8 @@ const PDF_LAYOUT = ({ item }: { item: any }) => {
               {item.Pet[0].NumberofPet === null
                 ? "NONE"
                 : item.Pet[0].NumberofPet?.dogno === undefined
-                  ? "NONE"
-                  : item.Pet[0].NumberofPet?.dogno}{" "}
+                ? "NONE"
+                : item.Pet[0].NumberofPet?.dogno}{" "}
             </label>
           </div>
 
