@@ -8,9 +8,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 const FilterList = ({
   open,
   setOpen,
+  setCurrentPage,
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>; // ✅ Added prop
 }) => {
   const router = useRouter();
   const [spcage, setSpcage] = useState("");
@@ -127,6 +129,7 @@ const FilterList = ({
     } else {
       params.delete("spcage");
     }
+    setCurrentPage(0); // ✅ Reset pagination when filters change
 
     router.push(`?${params.toString()}`);
   };
@@ -139,6 +142,7 @@ const FilterList = ({
 
     // ✅ Ensure `spcage` remains in the URL when clicking checkboxes
     updateUrlWithFilters(updatedFilters, spcage);
+    setCurrentPage(0); // ✅ Reset pagination when a filter is selected
   };
 
   const clearSearchParams = () => {

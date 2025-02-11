@@ -147,7 +147,7 @@ const FilterDashBoard = ({
       {renderFilterGroup("KILOMETER", "km")}
       {renderFilterGroup("FAMILY CLASS", "famclass")}
 
-      <div className="w-full flex flex-col gap-2 relative ">
+      {/* <div className="w-full flex flex-col gap-2 relative ">
         <label className="underline underline-offset-2 shrink-0">DATE</label>
         <div className="flex flex-col w-full justify-center items-center gap-1">
           <input
@@ -188,7 +188,7 @@ const FilterDashBoard = ({
             }}
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

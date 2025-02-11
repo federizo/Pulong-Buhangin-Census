@@ -85,8 +85,6 @@ export default function FamilyProfile() {
         })
       : true;
 
-
-      
     const spcAge = spcageParams ? parseInt(spcageParams) === age : true;
 
     // Filter for Civil Status (single, married, li)
@@ -156,6 +154,7 @@ export default function FamilyProfile() {
   const handlePageClick = ({ selected }: { selected: number }) => {
     setCurrentPage(selected);
   };
+  const allParams = Object.fromEntries(searchParams.entries());
 
   const paginatedData = filteredData.slice(
     currentPage * itemsPerPage,
@@ -173,6 +172,18 @@ export default function FamilyProfile() {
             <label className="flex">
               Census Family Members: {filteredData.length}
             </label>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(allParams).map(([key, value], index) => (
+              <div
+                key={index}
+                className="w-auto h-fit uppercase border-[1px] px-4 py-1 rounded"
+              >
+                <span>
+                  {key}: {value}
+                </span>
+              </div>
+            ))}
           </div>
           <button
             onClick={() => handleFetchHouseProfile()}
@@ -196,15 +207,15 @@ export default function FamilyProfile() {
           <IoIosSearch className="text-2xl" />
           <div className="h-[20px] mr-3 ml-3 w-[1px] dark:bg-zinc-800 bg-black" />
           <input
-  value={searchterm}
-  onChange={(e) => {
-    setSearchTerm(e.target.value.toUpperCase());
-    setCurrentPage(0); // ✅ Reset pagination when searching
-  }}
-  type="search"
-  className="w-full p-1 rounded-md bg-transparent outline-none "
-  placeholder="Search Name"
-/>
+            value={searchterm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value.toUpperCase());
+              setCurrentPage(0); // ✅ Reset pagination when searching
+            }}
+            type="search"
+            className="w-full p-1 rounded-md bg-transparent outline-none "
+            placeholder="Search Name"
+          />
         </div>
       </div>
 
@@ -224,7 +235,11 @@ export default function FamilyProfile() {
       </div>
 
       <div className=" lg:mb-0 mb-10 rounded-b-md border-zinc-200 dark:border-zinc-800 border dark:bg-graident-dark overflow-y-auto overflow-x-hidden flex flex-col w-full h-full  relative">
-        <FilterList open={openFilter} setOpen={setOpenFilter} />
+        <FilterList
+          open={openFilter}
+          setOpen={setOpenFilter}
+          setCurrentPage={setCurrentPage}
+        />
         {paginatedData.length === 0 ? (
           <div className="w-full flex items-center justify-center">
             <label className="font-semibold tracking-widest mt-10">

@@ -28,6 +28,8 @@ import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 const CensusFilteredGraph = () => {
   const [modal, setModal] = useState<boolean>(false);
   const [membersData, setMembersData] = useState<any[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0); // ✅ Add this line
+
   const [chartData, setChartData] = useState<any>([
     { kilometer: "37", population: 0, male: 0, female: 0, fill: "#4285F4" },
     { kilometer: "38-A", population: 0, male: 0, female: 0, fill: "#FFAC45" },
@@ -206,7 +208,11 @@ const CensusFilteredGraph = () => {
       </div>
 
       <div className="w-full flex relative z-0 gap-4 flex-wrap">
-        <FilterList open={modal} setOpen={setModal} />
+        <FilterList
+          open={modal}
+          setOpen={setModal}
+          setCurrentPage={setCurrentPage}
+        />
         <PieComponent chartData={chartData} />
         <BarComponent chartData={chartData} />
       </div>
