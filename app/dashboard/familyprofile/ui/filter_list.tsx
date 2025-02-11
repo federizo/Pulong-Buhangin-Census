@@ -102,22 +102,33 @@ const FilterList = ({
 
   const [filters, setFilters] = useState(getInitialFilters());
 
-  const updateUrlWithFilters = () => {
-    const params: Record<string, string[]> = {};
+  const updateUrlWithFilters = (
+    filtersState: typeof filters,
+    specificAge: string
+  ) => {
+    const params = new URLSearchParams(window.location.search);
 
-    for (const [group, items] of Object.entries(filters)) {
+    // ✅ Preserve all active filters
+    for (const [group, items] of Object.entries(filtersState)) {
       const selectedFilters = items
         .filter((item) => item.filterstatus)
         .map((item) => item.value);
+
       if (selectedFilters.length > 0) {
-        params[group] = selectedFilters;
+        params.set(group, selectedFilters.join(","));
+      } else {
+        params.delete(group);
       }
     }
 
-    const queryString = new URLSearchParams(
-      params as unknown as Record<string, string>
-    ).toString();
-    router.push(`?${queryString}`);
+    // ✅ Ensure `spcage` is included in the URL
+    if (specificAge) {
+      params.set("spcage", specificAge);
+    } else {
+      params.delete("spcage");
+    }
+
+    router.push(`?${params.toString()}`);
   };
 
   const handleFilterChange = (group: keyof typeof filters, index: number) => {
@@ -126,27 +137,14 @@ const FilterList = ({
       !updatedFilters[group][index].filterstatus;
     setFilters(updatedFilters);
 
-    // Clear specific age input when an age filter is selected
-    if (group === "age") {
-      setSpcage("");
-
-      // Remove "spcage" from the URL
-      const params = new URLSearchParams(window.location.search);
-      params.delete("spcage");
-      router.push(`?${params.toString()}`);
-    }
-
-    updateUrlWithFilters();
+    // ✅ Ensure `spcage` remains in the URL when clicking checkboxes
+    updateUrlWithFilters(updatedFilters, spcage);
   };
 
   const clearSearchParams = () => {
-    const newSearchParams = new URLSearchParams();
-    window.history.replaceState(
-      {},
-      "",
-      `${window.location.pathname}?${newSearchParams.toString()}`
-    );
-    window.location.reload();
+    router.push(window.location.pathname);
+    setFilters(getInitialFilters()); // Reset filters
+    setSpcage(""); // Reset `spcage`
   };
 
   const renderFilterGroup = (label: string, group: keyof typeof filters) => (
@@ -200,7 +198,7 @@ const FilterList = ({
       {renderFilterGroup("GENDER", "gender")}
       {renderFilterGroup("AGE", "age")}
       <input
-        type="number"
+        type="text"
         className="p-2 w-full"
         placeholder="Input Specific Age"
         value={spcage}
@@ -208,16 +206,8 @@ const FilterList = ({
           const value = e.target.value;
           setSpcage(value);
 
-          // Update URL with spcage
-          const params = new URLSearchParams(window.location.search);
-
-          if (value) {
-            params.set("spcage", value);
-          } else {
-            params.delete("spcage");
-          }
-
-          router.push(`?${params.toString()}`);
+          // ✅ Update URL without clearing other filters
+          updateUrlWithFilters(filters, value);
         }}
       />
       {renderFilterGroup("CIVIL STATUS", "civilStatus")}

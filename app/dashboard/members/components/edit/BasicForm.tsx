@@ -68,7 +68,9 @@ export default function BasicForm({ permission }: { permission: IPermission }) {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormDescription className="text-lg dark:text-white font-bold text-black">Edit Name here</FormDescription>
+              <FormDescription className="text-lg dark:text-white font-bold text-black">
+                Edit Name here
+              </FormDescription>
               <FormLabel>Display Name</FormLabel>
               <FormControl>
                 <Input placeholder="shadcn" {...field} />

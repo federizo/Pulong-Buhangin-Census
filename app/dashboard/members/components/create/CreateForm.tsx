@@ -40,7 +40,21 @@ const FormSchema = z
     role: z.enum(["user", "admin"]),
     status: z.enum(["active", "resigned"]),
     email: z.string().email(),
-    password: z.string().min(6, { message: "Password should be 6 characters" }),
+    password: z
+      .string()
+      .optional()
+      .refine(
+        (value) => !value || /[A-Z]/.test(value), // ✅ Require at least one uppercase letter
+        { message: "Password must contain at least one uppercase letter." }
+      )
+      .refine(
+        (value) => !value || /[!@#$%^&*()_+{}\[\]:;<>,.?/~\\-]/.test(value), // ✅ Require special character
+        { message: "Password must contain at least one special character." }
+      )
+      .refine(
+        (value) => !value || value.length >= 8, // ✅ Enforce minimum length
+        { message: "Password must be at least 8 characters long." }
+      ),
     confirm: z.string().min(6, { message: "Password should be 6 characters" }),
     agentId: z.string().min(6, { message: "Agent ID must be 6 digits." }),
     permission: z.array(z.string()),
@@ -71,7 +85,7 @@ export default function MemberForm() {
 
   useEffect(() => {
     const generateAgentId = () => {
-      return Math.floor(100000 + Math.random() * 900000).toString();
+      return Math.floor(100000 + Math.random() * 900000).toString(); // ✅ Always return a string
     };
     form.setValue("agentId", generateAgentId());
   }, [form]);
@@ -116,7 +130,7 @@ export default function MemberForm() {
               <FormControl>
                 <Input
                   placeholder="email@gmail.com"
-                  type="email"
+                  type="text"
                   {...field}
                   onChange={field.onChange}
                 />
@@ -246,8 +260,6 @@ export default function MemberForm() {
             </FormItem>
           )}
         />
-
-        <Checkbox />
 
         <FormField
           control={form.control}

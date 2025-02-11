@@ -39,11 +39,15 @@ const generatePDF = async (ref: HTMLDivElement, item: any) => {
       member.Age?.toString() || "",
       member.Gender || "",
       member.Religion && typeof member.Religion === "object"
-      ? member.Religion.value === "OTHER"
-        ? member.Religion.other || "N/A" // ✅ Show custom input if "Other" was selected
-        : member.Religion.value // ✅ Show selected radio button value
-      : member.Religion || "N/A",
-      member.Education || "", // ✅ Added Education
+        ? member.Religion.value === "OTHER"
+          ? member.Religion.other || "N/A" // ✅ Show custom input if "Other" was selected
+          : member.Religion.value // ✅ Show selected radio button value
+        : member.Religion || "N/A",
+      member.Education && typeof member.Education === "object"
+        ? member.Education.value === "OTHER"
+          ? member.Education.other || "N/A" // ✅ Show custom input if "Other" was selected
+          : member.Education.value // ✅ Show selected radio button value
+        : member.Education || "N/A", // ✅ Added Education
       member.PWD ? "Yes" : "No", // ✅ Added PWD (boolean handling)
       member.Lactating === "yes" ? "Yes" : "No", // ✅ FIXED
     ]);
@@ -146,14 +150,13 @@ const PDF_LAYOUT_FAM = ({ item }: { item: any }) => {
                 </td>
                 <td className="border px-2 py-1">{member.Gender || ""}</td>
                 <td className="border px-2 py-1">
-  {member.Religion && typeof member.Religion === "object"
-    ? member.Religion.value === "OTHER"
-      ? member.Religion.other || "N/A" // ✅ Show "Other" value
-      : member.Religion.value // ✅ Show selected radio button value
-    : member.Religion || "N/A"} {/* ✅ Handle string case or empty value */}
-</td>
-
-
+                  {member.Religion && typeof member.Religion === "object"
+                    ? member.Religion.value === "OTHER"
+                      ? member.Religion.other || "N/A" // ✅ Show "Other" value
+                      : member.Religion.value // ✅ Show selected radio button value
+                    : member.Religion || "N/A"}{" "}
+                  {/* ✅ Handle string case or empty value */}
+                </td>
 
                 <td className="border px-2 py-1">
                   {member.Education && typeof member.Education === "object"

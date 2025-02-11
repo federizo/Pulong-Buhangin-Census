@@ -1,4 +1,3 @@
-
 import React from "react";
 import NavLinks from "./NavLinks";
 import { cn } from "@/lib/utils";
@@ -6,18 +5,34 @@ import ModeToggle from "./ToggleDarkMode";
 import SignOut from "./SignOut";
 import { IoPersonSharp } from "react-icons/io5";
 
-export default function SideNav({ isAdmin, userSession }: { isAdmin: boolean, userSession: any }) {
-
-	return (
-		<>
-			<SideBar className=" hidden lg:block dark:bg-graident-dark flex-1" isAdmin={isAdmin} userSession={userSession} />
-		</>
-	);
+export default function SideNav({
+  isAdmin,
+  userSession,
+}: {
+  isAdmin: boolean;
+  userSession: any;
+}) {
+  return (
+    <>
+      <SideBar
+        className=" hidden lg:block dark:bg-graident-dark flex-1"
+        isAdmin={isAdmin}
+        userSession={userSession}
+      />
+    </>
+  );
 }
 
-export const SideBar = ({ className, isAdmin, userSession }: { className?: string, isAdmin: boolean, userSession: any }) => {
-
-	return (
+export const SideBar = ({
+  className,
+  isAdmin,
+  userSession,
+}: {
+  className?: string;
+  isAdmin: boolean;
+  userSession: any;
+}) => {
+  return (
     <div className={className}>
       <div
         className={cn(

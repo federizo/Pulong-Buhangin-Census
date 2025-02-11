@@ -573,6 +573,7 @@ const MemberModalFamilyProfile = ({
                   {/* ELEMENTARY */}
                   <div className="flex gap-2 items-center">
                     <input
+                      disabled={edit}
                       type="radio"
                       name="education"
                       value="ELEMENTARY GRADUATE"
@@ -581,7 +582,6 @@ const MemberModalFamilyProfile = ({
                         setSelectedUser((prev: any) => ({
                           ...prev,
                           Education: e.target.value,
-                          OtherEducation: "", // Reset other field when another option is selected
                         }))
                       }
                     />
@@ -593,6 +593,7 @@ const MemberModalFamilyProfile = ({
                   {/* HIGH SCHOOL */}
                   <div className="flex gap-2 items-center">
                     <input
+                      disabled={edit}
                       type="radio"
                       name="education"
                       value="HIGH SCHOOL GRADUATE"
@@ -603,7 +604,6 @@ const MemberModalFamilyProfile = ({
                         setSelectedUser((prev: any) => ({
                           ...prev,
                           Education: e.target.value,
-                          OtherEducation: "",
                         }))
                       }
                     />
@@ -615,6 +615,7 @@ const MemberModalFamilyProfile = ({
                   {/* COLLEGE */}
                   <div className="flex gap-2 items-center">
                     <input
+                      disabled={edit}
                       type="radio"
                       name="education"
                       value="COLLEGE GRADUATE"
@@ -623,7 +624,6 @@ const MemberModalFamilyProfile = ({
                         setSelectedUser((prev: any) => ({
                           ...prev,
                           Education: e.target.value,
-                          OtherEducation: "",
                         }))
                       }
                     />
@@ -635,6 +635,7 @@ const MemberModalFamilyProfile = ({
                   {/* OTHERS - SHOW TEXTBOX IF SELECTED */}
                   <div className="flex gap-2 items-center">
                     <input
+                      disabled={edit}
                       type="radio"
                       name="education"
                       value="OTHERS"
@@ -657,7 +658,7 @@ const MemberModalFamilyProfile = ({
                       type="text"
                       placeholder="Specify your education level"
                       className="border px-3 py-2 rounded-md uppercase"
-                      value={selectedUser.OtherEducation || ""}
+                      value={selectedUser.Education || ""}
                       onChange={(e) => {
                         const onlyLetters = e.target.value.replace(
                           /[^A-Za-z\s]/g,
@@ -665,7 +666,7 @@ const MemberModalFamilyProfile = ({
                         ); // Remove numbers & special characters
                         setSelectedUser((prev: any) => ({
                           ...prev,
-                          OtherEducation: onlyLetters.toUpperCase(), // Convert to uppercase
+                          Education: onlyLetters.toUpperCase(), // Convert to uppercase
                         }));
                       }}
                     />

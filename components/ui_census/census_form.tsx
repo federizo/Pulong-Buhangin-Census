@@ -148,16 +148,16 @@ const CensusForm = ({
 
         <div className="mt-5 flex flex-col gap-3 text-[1.6vh] text-black dark:text-white">
           <div className="flex w-full gap-2 items-center">
-            <label className="font-semibold tracking-wider flex">
+            <label className="font-semibold text-lg  tracking-wider flex">
               FAMILY MEMBERS NO:
             </label>
-            <label className="  h-fit w-fit rounded">
+            <label className="  h-fit w-fit text-lg rounded">
               {formData.FamMember.length}
             </label>
           </div>
 
           <div className="flex flex-col w-full gap-2 ">
-            <label className="font-semibold tracking-wider flex ">
+            <label className="font-semibold text-medium  tracking-wider flex ">
               NO OF FAMILY:{" "}
               <LuAsterisk className="text-red-500 text-[0.8rem]" />
             </label>
@@ -175,12 +175,12 @@ const CensusForm = ({
                   }));
                 }
               }}
-              className=" border-[0.5px] bg-transparent p-2 h-fit w-full rounded "
+              className=" border-[0.5px] bg-transparent text-medium  p-2 h-fit w-full rounded "
             />
           </div>
 
           <div className="flex w-full flex-col gap-2  ">
-            <label className="font-semibold tracking-wider flex gap-1">
+            <label className="font-semibold text-medium  tracking-wider flex gap-1">
               HOUSE CONTACT NO:{" "}
               <LuAsterisk className="text-red-500 text-[0.8rem]" />
             </label>
@@ -198,7 +198,7 @@ const CensusForm = ({
                   }));
                 }
               }} // Remove non-numeric characters
-              className=" border-[0.5px] bg-transparent p-2 h-fit w-full rounded"
+              className=" border-[0.5px] bg-transparent text-medium  p-2 h-fit w-full rounded"
             />
           </div>
           <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
@@ -207,7 +207,7 @@ const CensusForm = ({
             <IoLocationSharp /> LOCATION
           </h1>
           <div className="flex w-full flex-col gap-2  ">
-            <label className="font-semibold tracking-wider flex gap-1">
+            <label className="font-semibold tracking-wider text-medium  flex gap-1">
               HOUSE NO: <LuAsterisk className="text-red-500 text-[0.8rem]" />{" "}
               <span className="italic text-slate-500">
                 {"(Type NA if not applicable)"}
@@ -227,12 +227,12 @@ const CensusForm = ({
                 }
               }}
               name="HouseNumber"
-              className=" border-[0.5px] bg-transparent p-2 h-fit w-full rounded"
+              className=" border-[0.5px] bg-transparent text-medium  p-2 h-fit w-full rounded"
             />
           </div>
 
           <div className="flex w-full flex-col gap-2  ">
-            <label className="font-semibold tracking-wider flex gap-1">
+            <label className="font-semibold text-medium  tracking-wider flex gap-1">
               BC NO:
             </label>
             <input
@@ -249,11 +249,13 @@ const CensusForm = ({
                 }
               }}
               name="BcNumber"
-              className=" border-[0.5px] bg-transparent p-2 h-fit w-full rounded"
+              className=" border-[0.5px] bg-transparent text-medium  p-2 h-fit w-full rounded"
             />
           </div>
           <div className="flex w-full flex-col gap-2">
-            <label className="font-semibold tracking-wider">STREET:</label>
+            <label className="font-semibold text-medium  tracking-wider">
+              STREET:
+            </label>
             <input
               value={formData.Location.Street}
               type="text"
@@ -272,11 +274,13 @@ const CensusForm = ({
                 }
               }}
               name="housenumber"
-              className="border-[0.5px] bg-transparent p-2 h-fit w-full rounded"
+              className="border-[0.5px] bg-transparent text-medium  p-2 h-fit w-full rounded"
             />
           </div>
           <div className="flex w-full flex-col gap-2  ">
-            <label className="font-semibold tracking-wider">SUBD:</label>
+            <label className="font-semibold text-medium  tracking-wider">
+              SUBD:
+            </label>
             <input
               value={formData.Location?.SubdivisionName}
               type="text"
@@ -294,12 +298,12 @@ const CensusForm = ({
                 }
               }}
               name="housenumber"
-              className=" border-[0.5px] bg-transparent p-2 h-fit w-full rounded"
+              className=" border-[0.5px] bg-transparent text-medium  p-2 h-fit w-full rounded"
             />
           </div>
 
           <div className="flex w-full flex-col gap-2">
-            <label className="font-semibold tracking-wider flex gap-1">
+            <label className="font-semibold tracking-wider text-medium  flex gap-1">
               KM: <LuAsterisk className="text-red-500 text-[0.8rem]" />{" "}
               <span className="italic text-slate-500">
                 {"(Choose OTHER if not applicable)"}
@@ -319,7 +323,7 @@ const CensusForm = ({
                 }))
               }
             >
-              <SelectTrigger className="w-full py-2 rounded">
+              <SelectTrigger className="w-full text-medium  py-2 rounded">
                 <SelectValue placeholder="Choose Kilometer" />
               </SelectTrigger>
               <SelectContent>
@@ -339,7 +343,9 @@ const CensusForm = ({
           {formData.Location[0]?.SubdivisionName !== "" && (
             <>
               <div className="flex w-full flex-col gap-2  ">
-                <label className="font-semibold tracking-wider">BLOCK:</label>
+                <label className="font-semibold text-medium  tracking-wider">
+                  BLOCK:
+                </label>
                 <input
                   value={formData?.Location.Block}
                   type="text"
@@ -357,12 +363,14 @@ const CensusForm = ({
                     }
                   }}
                   name="housenumber"
-                  className=" border-[0.5px] bg-transparent p-2 h-fit w-full rounded"
+                  className=" border-[0.5px] bg-transparent text-medium  p-2 h-fit w-full rounded"
                 />
               </div>
 
               <div className="flex w-full flex-col gap-2  ">
-                <label className="font-semibold tracking-wider">LOT:</label>
+                <label className="font-semibold text-medium  tracking-wider">
+                  LOT:
+                </label>
                 <input
                   value={formData?.Location?.Lot}
                   type="text"
@@ -380,12 +388,14 @@ const CensusForm = ({
                     }
                   }}
                   name="housenumber"
-                  className=" border-[0.5px] bg-transparent p-2 h-fit w-full rounded"
+                  className=" border-[0.5px] bg-transparent text-medium  p-2 h-fit w-full rounded"
                 />
               </div>
 
               <div className="flex w-full flex-col gap-2  ">
-                <label className="font-semibold tracking-wider">PHASE:</label>
+                <label className="font-semibold text-medium  tracking-wider">
+                  PHASE:
+                </label>
                 <input
                   value={formData?.Location?.Phase}
                   type="text"
@@ -403,7 +413,7 @@ const CensusForm = ({
                     }
                   }}
                   name="housenumber"
-                  className=" border-[0.5px] bg-transparent p-2 h-fit w-full rounded"
+                  className=" border-[0.5px] bg-transparent text-medium  p-2 h-fit w-full rounded"
                 />
               </div>
             </>
@@ -419,7 +429,7 @@ const CensusForm = ({
             FAMILY MEMBER {formData.FamMember.length}
           </h1>
           <div className="flex flex-wrap gap-2 border-[1px] p-2 rounded items-center mb-3">
-            <label className="tracking-widest">MEMBERS:</label>
+            <label className="tracking-widest text-medium ">MEMBERS:</label>
             {formData?.FamMember?.map((member: any, index: number) => (
               <div
                 onClick={() => handleShowMemberInformation(member)}
@@ -476,7 +486,7 @@ const CensusForm = ({
               DO YOU HAVE:
             </label>
             <div className="flex gap-2">
-              <label className="font-semibold tracking-wider">
+              <label className="font-semibold text-medium tracking-wider">
                 VEGTABLE/GARDEN
               </label>
               <Checkbox
@@ -493,7 +503,7 @@ const CensusForm = ({
               />
             </div>
             <div className="flex gap-2 ">
-              <label className="font-semibold tracking-wider">
+              <label className="font-semibold text-medium  tracking-wider">
                 LIVESTOCK/POULTRY
               </label>
               <Checkbox
@@ -510,7 +520,9 @@ const CensusForm = ({
               />
             </div>
             <div className="flex gap-2 ">
-              <label className="font-semibold tracking-wider">PIGGERY</label>
+              <label className="font-semibold text-medium  tracking-wider">
+                PIGGERY
+              </label>
               <Checkbox
                 disabled={edit}
                 className="h-6 w-6 border-2 rounded border-gray-400 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-700 transition-colors duration-300"
@@ -525,7 +537,9 @@ const CensusForm = ({
               />
             </div>
             <div className="flex gap-2 ">
-              <label className="font-semibold tracking-wider">FISHPOND</label>
+              <label className="font-semibold text-medium  tracking-wider">
+                FISHPOND
+              </label>
               <Checkbox
                 disabled={edit}
                 className="h-6 w-6 border-2 rounded border-gray-400 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-700 transition-colors duration-300"
@@ -548,7 +562,7 @@ const CensusForm = ({
               HOUSEHOLD USES:
             </label>
             <div className="flex gap-2">
-              <label className="font-semibold tracking-wider">
+              <label className="font-semibold text-medium  tracking-wider">
                 IODIZED SALT
               </label>
               <Checkbox
@@ -566,7 +580,7 @@ const CensusForm = ({
             </div>
 
             <div className="flex gap-2 ">
-              <label className="font-semibold tracking-wider">
+              <label className="font-semibold text-medium  tracking-wider">
                 FORTIFIED FOOD PRODUCTS
               </label>
               <Checkbox
@@ -592,7 +606,9 @@ const CensusForm = ({
             </label>
 
             <div className="flex gap-2 items-center ">
-              <label className="font-semibold tracking-wider">DOG</label>
+              <label className="font-semibold text-medium  tracking-wider">
+                DOG
+              </label>
               <Checkbox
                 disabled={edit}
                 className="h-6 w-6 border-2 rounded border-gray-400 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-700 transition-colors duration-300"
@@ -645,7 +661,9 @@ const CensusForm = ({
             </div>
 
             <div className="flex gap-2 items-center">
-              <label className="font-semibold tracking-wider">CAT</label>
+              <label className="font-semibold text-medium  tracking-wider">
+                CAT
+              </label>
               <Checkbox
                 disabled={edit}
                 className="h-6 w-6 border-2 rounded border-gray-400 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-700 transition-colors duration-300"
@@ -704,10 +722,10 @@ const CensusForm = ({
               </label>
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
-                  <label className="text-md lg:text-lg tracking-widest">
+                  <label className="text-lg sm:text-xl font-medium tracking-widest">
                     4 WHEEL VEHICLE
                   </label>
-                  <span className="italic text-xs text-slate-500 tracking-widest">
+                  <span className="italic text-xs text-slate-500 font-bold tracking-widest">
                     {"(Car, Van, Truck)"}
                   </span>
                 </div>
@@ -741,10 +759,10 @@ const CensusForm = ({
               </div>
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
-                  <label className="text-md lg:text-lg tracking-widest">
+                  <label className="text-lg sm:text-xl font-medium tracking-widest">
                     3 WHEEL VEHICLE
                   </label>
-                  <span className="italic text-xs text-slate-500 tracking-widest">
+                  <span className="italic text-xs text-slate-500 font-bold  tracking-widest">
                     {"(Tricycle)"}
                   </span>
                 </div>
@@ -779,10 +797,10 @@ const CensusForm = ({
 
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
-                  <label className="text-md lg:text-lg tracking-widest">
+                  <label className="text-lg sm:text-xl font-medium tracking-widest">
                     2 WHEEL VEHICLE
                   </label>
-                  <span className="italic text-xs text-slate-500 tracking-widest">
+                  <span className="italic text-xs text-slate-500 font-bold  tracking-widest">
                     {"(Motorcycle)"}
                   </span>
                 </div>
@@ -823,10 +841,10 @@ const CensusForm = ({
               </label>
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
-                  <label className="text-md lg:text-lg tracking-widest">
+                  <label className="text-lg sm:text-xl font-medium tracking-widest">
                     SMART PHONE
                   </label>
-                  <span className="italic text-xs text-slate-500 tracking-widest">
+                  <span className="italic text-xs text-slate-500 font-bold tracking-widest">
                     {"(Cellphone, Tablet)"}
                   </span>
                 </div>
@@ -861,10 +879,10 @@ const CensusForm = ({
 
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
-                  <label className="text-md lg:text-lg tracking-widest">
+                  <label className="text-lg sm:text-xl font-medium tracking-widest">
                     COMPUTER
                   </label>
-                  <span className="italic text-xs text-slate-500 tracking-widest">
+                  <span className="italic text-xs text-slate-500 font-bold  tracking-widest">
                     {"(Desktop, Laptop)"}
                   </span>
                 </div>
@@ -898,10 +916,10 @@ const CensusForm = ({
               </div>
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
-                  <label className="text-md lg:text-lg tracking-widest">
+                  <label className="text-lg sm:text-xl font-medium tracking-widest">
                     WIFI
                   </label>
-                  <span className="italic text-xs text-slate-500 tracking-widest">
+                  <span className="italic text-xs text-slate-500 font-bold  tracking-widest">
                     {"(Desktop, Laptop)"}
                   </span>
                 </div>
@@ -942,7 +960,7 @@ const CensusForm = ({
               </label>
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
-                  <label className="text-md lg:text-lg tracking-widest">
+                  <label className="text-lg sm:text-xl font-medium tracking-widest">
                     AIRCON
                   </label>
                 </div>
@@ -976,7 +994,7 @@ const CensusForm = ({
               </div>
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
-                  <label className="text-md lg:text-lg tracking-widest">
+                  <label className="text-lg sm:text-xl font-medium tracking-widest">
                     REFRIGERATOR
                   </label>
                 </div>
@@ -1010,7 +1028,7 @@ const CensusForm = ({
               </div>
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
-                  <label className="text-md lg:text-lg tracking-widest">
+                  <label className="text-lg sm:text-xl font-medium tracking-widest">
                     TELEVISION
                   </label>
                 </div>
@@ -1044,7 +1062,7 @@ const CensusForm = ({
               </div>
               <div className="flex w-full items-center gap-2">
                 <div className="flex items-center flex-col">
-                  <label className="text-md lg:text-lg tracking-widest">
+                  <label className="text-lg sm:text-xl font-medium tracking-widest">
                     WASHING MACHINE/DRYER
                   </label>
                 </div>
@@ -1081,7 +1099,7 @@ const CensusForm = ({
               </div>
               <div className="flex flex-col w-full items-start gap-2">
                 <div className="flex items-center flex-col">
-                  <label className="text-md lg:text-lg tracking-widest">
+                  <label className="text-lg sm:text-xl font-medium tracking-widest">
                     OTHER APPLIANCES
                   </label>
                 </div>
