@@ -227,7 +227,7 @@ const CensusForm = ({
                 }
               }}
               name="HouseNumber"
-              className=" border-[0.5px]border-gray-600 dark:border-gray-100 bg-transparent text-medium  p-2 h-fit w-full rounded"
+              className=" border-[0.5px] border-gray-600 dark:border-gray-100 bg-transparent text-medium  p-2 h-fit w-full rounded"
             />
           </div>
 
