@@ -201,7 +201,7 @@ const CensusForm = ({
               className=" border-[0.5px] border-gray-600 dark:border-gray-100 bg-transparent text-medium  p-2 h-fit w-full rounded"
             />
           </div>
-          <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
+          <div className="w-[100%] h-[1px] mt-5 bg-slate-800 dark:bg-white" />
 
           <h1 className="font-semibold items-center gap-2 flex text-[1.2rem]">
             <IoLocationSharp /> LOCATION
@@ -418,7 +418,7 @@ const CensusForm = ({
               </div>
             </>
           )}
-          <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
+          <div className="w-[100%] h-[1px] mt-5 bg-slate-800 dark:bg-white" />
 
           <h1
             id="targetDiv"
@@ -428,7 +428,7 @@ const CensusForm = ({
             <IoPeopleSharp />
             FAMILY MEMBER {formData.FamMember.length}
           </h1>
-          <div className="flex flex-wrap gap-2 border-[1px] border-gray-600 dark:border-gray-100 p-2 rounded items-center mb-3">
+          <div className="flex flex-wrap gap-2 border-[0.5px] border-gray-600 dark:border-gray-100 p-2 rounded items-center mb-3">
             <label className="tracking-widest text-medium ">MEMBERS:</label>
             {formData?.FamMember?.map((member: any, index: number) => (
               <div
@@ -468,7 +468,7 @@ const CensusForm = ({
               )}
             </div>
           )}
-          <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
+          <div className="w-[100%] h-[1px] mt-5 bg-slate-800 dark:bg-white" />
 
           <div className="mt-5">
             <CensusApartment
@@ -478,7 +478,7 @@ const CensusForm = ({
               edit={edit}
             />
           </div>
-          <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
+          <div className="w-[100%] h-[1px] mt-5 bg-slate-800 dark:bg-white" />
 
           <div className="flex flex-col mt-5 gap-5">
             <label className="text-[1.2rem] font-semibold tracking-wider flex items-center gap-2">
@@ -554,7 +554,7 @@ const CensusForm = ({
               />
             </div>
           </div>
-          <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
+          <div className="w-[100%] h-[1px] mt-5 bg-slate-800 dark:bg-white" />
 
           <div className="flex flex-col mt-5 gap-5">
             <label className="text-[1.2rem] font-semibold tracking-wider flex items-center gap-2">
@@ -597,7 +597,7 @@ const CensusForm = ({
               />
             </div>
           </div>
-          <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
+          <div className="w-[100%] h-[1px] mt-5 bg-slate-800 dark:bg-white" />
 
           <div className="flex flex-col gap-3 mt-2">
             <label className="text-[1.2rem] font-semibold flex items-center gap-2 ">
@@ -652,7 +652,7 @@ const CensusForm = ({
                     }));
                   }
                 }}
-                className={`border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded no-arrows ${
+                className={`border-[1px] border-gray-600 dark:border-gray-100 bg-transparent p-2 h-fit w-[100px] rounded no-arrows ${
                   !formData.Pet?.TypeofPet?.dog
                     ? "opacity-50 cursor-not-allowed"
                     : ""
@@ -707,14 +707,14 @@ const CensusForm = ({
                     }));
                   }
                 }}
-                className={`border-[0.5px] bg-transparent p-2 h-fit w-[100px] rounded no-arrows ${
+                className={`border-[1px] border-gray-600 dark:border-gray-100 bg-transparent p-2 h-fit w-[100px] rounded no-arrows ${
                   !formData.Pet?.TypeofPet?.cat
                     ? "opacity-50 cursor-not-allowed"
                     : ""
                 }`} // Visual cue when disabled
               />
             </div>
-            <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
+            <div className="w-[100%] h-[1px] mt-5 bg-slate-800 dark:bg-white" />
 
             <div className="flex flex-col gap-3 mt-4">
               <label className="text-[1.2rem] font-semibold flex items-center gap-2 ">
@@ -833,7 +833,7 @@ const CensusForm = ({
                 />
               </div>
             </div>
-            <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
+            <div className="w-[100%] h-[1px] mt-5 bg-slate-800 dark:bg-white" />
 
             <div className="flex flex-col gap-3 mt-4">
               <label className="text-[1.2rem] font-semibold flex items-center gap-2 ">
@@ -952,7 +952,7 @@ const CensusForm = ({
                 />
               </div>
             </div>
-            <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
+            <div className="w-[100%] h-[1px] mt-5 bg-slate-800 dark:bg-white" />
 
             <div className="flex flex-col gap-3 mt-4">
               <label className="text-[1.2rem] font-semibold flex items-center gap-2 ">
@@ -1120,7 +1120,7 @@ const CensusForm = ({
                 />
               </div>
             </div>
-            <div className="w-[100%] h-[1px] mt-5 bg-slate-800" />
+            <div className="w-[100%] h-[1px] mt-5 bg-slate-800 dark:bg-white" />
 
             <div className="flex flex-col gap-2">
               <label className="font-semibold text-lg">

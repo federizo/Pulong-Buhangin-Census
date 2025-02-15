@@ -112,7 +112,7 @@ const CensusMemberForm = ({
     <div
       className={`${
         minimizeForm ? " max-h-fit" : "h-[50px]"
-      } duration-300 flex flex-col gap-2 overflow-hidden w-5xl px-3 py-2 rounded border-[1px] text-black dark:text-white`}
+      } duration-300 flex flex-col gap-2 overflow-hidden w-5xl px-3 py-2 rounded border-[0.5px] border-gray-500 text-black dark:text-white`}
     >
       <div className="flex items-center justify-between">
         <label className="px-2 rounded bg-slate-200 text-black w-fit ]"></label>
