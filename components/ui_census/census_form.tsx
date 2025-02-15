@@ -1175,7 +1175,7 @@ const CensusForm = ({
 
             <div className="flex flex-col gap-2 w-full mt-5 mb-5">
               <div className="flex justify-center w-full mb-5">
-                <div className="w-[100%] h-[1px] bg-slate-800" />
+                <div className="w-[100%] h-[1px] bg-slate-800 dark:bg-white" />
               </div>
 
               <label className="text-lg tracking-widest">REMARKS:</label>
