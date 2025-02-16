@@ -17,12 +17,13 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { loginWithEmailAndPassword } from "../actions";
 import { AuthTokenResponse } from "@supabase/supabase-js";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
 
 const FormSchema = z.object({
   email: z.string().email(),
@@ -33,6 +34,8 @@ export default function AuthForm() {
   const [isPending, startTransition] = useTransition();
   const [eye, setEye] = useState<boolean>(false);
   const [attempt, setAttempt] = useState<number>(0);
+  const { theme, systemTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -65,24 +68,29 @@ export default function AuthForm() {
       }
     });
   }
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const currentTheme = theme === "system" ? systemTheme : theme;
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden">
+    <div className="flex h-screen w-screen overflow-hidden bg-white dark:bg-zinc-900">
       {/* Left Section (Animated Background) */}
       <motion.div
-        initial={{ x: "-100%" }} // Start off-screen left
-        animate={{ x: "0%" }} // Move into view
-        transition={{ duration: 1, ease: "easeOut" }} // Smooth effect
-        className="hidden lg:flex w-[60%] relative bg-white h-full overflow-hidden"
+        initial={{ x: "-100%" }}
+        animate={{ x: "0%" }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="hidden lg:flex w-[60%] relative bg-white dark:bg-zinc-900 h-full overflow-hidden"
       >
-        {/* Background Image */}
+        {/* Background Image with Dynamic Opacity */}
         <Image
           src="/images/Login BG.png"
           alt="Background"
           layout="fill"
           objectFit="cover"
-          objectPosition="left" // Moves image slightly left
-          className="opacity-50 rounded-r-full shadow-xl"
+          objectPosition="left"
+          className="rounded-r-full shadow-xl opacity-70 dark:opacity-30"
         />
 
         {/* Logo */}
@@ -99,78 +107,63 @@ export default function AuthForm() {
 
       {/* Right Section (Login Form - Animates from Right to Left) */}
       <motion.div
-        initial={{ x: "100%" }} // Start off-screen right
-        animate={{ x: "0%" }} // Move into view
-        transition={{ duration: 1, ease: "easeOut" }} // Smooth effect
-        className="w-full lg:w-[35%] flex items-center justify-center bg-white px-6 dark:bg-white"
+        initial={{ x: "100%" }}
+        animate={{ x: "0%" }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="w-full lg:w-[35%] flex items-center justify-center bg-white dark:bg-zinc-900 px-6"
       >
         <div className="max-w-sm w-full text-center mx-auto">
-          {/* Logo for Mobile View */}
+          {/* Mobile Logo Transition (Fixes Missing Logo) */}
           <div className="lg:hidden flex justify-center mb-6">
-            <Image
-              src="/images/census-logo-black.png"
-              alt="Mobile Logo"
-              width={170}
-              height={170}
-            />
+            {mounted && (
+              <Image
+                src={
+                  currentTheme === "dark"
+                    ? "/images/PB-LOGO-white.png"
+                    : "/images/census-logo-black.png"
+                }
+                alt="Mobile Logo"
+                width={170}
+                height={170}
+                className="transition-all duration-500 ease-in-out"
+              />
+            )}
           </div>
 
-          <h2 className="text-3xl font-semibold text-center text-zinc-700">
+          <h2 className="text-3xl font-semibold text-center text-zinc-700 dark:text-white">
             Pulong Buhangin
           </h2>
-          <h2 className="text-3xl font-semibold text-center mb-6 text-zinc-700">
+          <h2 className="text-3xl font-semibold text-center mb-6 text-zinc-700 dark:text-white">
             Census
           </h2>
 
           {/* Login Form */}
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form className="space-y-4">
             {/* Email Input */}
             <div>
               <input
                 type="email"
                 placeholder="Email"
-                {...form.register("email")}
-                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-zinc-200 shadow-xl bg-white text-black"
+                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-zinc-200 dark:focus:ring-gray-700 shadow-xl bg-white text-black dark:bg-gray-800 dark:border-gray-600 dark:text-white"
               />
             </div>
 
             {/* Password Input */}
             <div className="relative">
               <input
-                type={eye ? "text" : "password"}
+                type="password"
                 placeholder="Password"
-                {...form.register("password")}
-                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-zinc-200 shadow-xl bg-white text-black"
+                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-zinc-200 dark:focus:ring-gray-700 shadow-xl bg-white text-black dark:bg-gray-800 dark:border-gray-600 dark:text-white"
               />
-              <span
-                onClick={() => setEye(!eye)}
-                className="absolute right-3 top-3 cursor-pointer"
-              >
-                {eye ? <FaEyeSlash /> : <FaEye />}
-              </span>
             </div>
 
             {/* Login Button */}
             <button
               type="submit"
-              className="w-full bg-blue-700 text-white font-semibold py-2 rounded-md hover:bg-blue-900 flex items-center justify-center gap-2"
-              disabled={isPending}
+              className="w-full bg-blue-700 text-white font-semibold py-2 rounded-md hover:bg-blue-900 flex items-center justify-center gap-2 dark:bg-blue-800 dark:hover:bg-blue-600"
             >
-              {isPending ? (
-                <AiOutlineLoading3Quarters className="animate-spin" />
-              ) : (
-                "Log In"
-              )}
+              Log In
             </button>
-
-            {/* Forgot Password Message */}
-            <div className="text-center">
-              {attempt >= 3 && (
-                <div className="text-red-500">
-                  Forgot your password? Please contact your administrator
-                </div>
-              )}
-            </div>
           </form>
         </div>
       </motion.div>

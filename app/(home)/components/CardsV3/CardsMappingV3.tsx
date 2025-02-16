@@ -27,7 +27,7 @@ const Page: React.FC = () => {
       {data.map((item, index) => (
         <div
           key={index}
-          className="h-[500px] w-[320px] text-white relative group overflow-hidden hover:scale-105 duration-300 hover:bg-top border-solid border-2 border-gray-150 rounded-lg"
+          className="h-[500px] shadow-lg shadow-gray-300 dark:shadow-2xl dark:shadow-black border-[1px] w-[320px] text-white relative group overflow-hidden hover:scale-105 duration-300 hover:bg-top border-solid border-gray-400 rounded-lg"
         >
           <Image
             src={item.imageSrc} // Use Image component
