@@ -22,6 +22,7 @@ import { loginWithEmailAndPassword } from "../actions";
 import { AuthTokenResponse } from "@supabase/supabase-js";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const FormSchema = z.object({
   email: z.string().email(),
@@ -66,25 +67,48 @@ export default function AuthForm() {
   }
 
   return (
-    <div className="flex h-screen w-screen bg-white">
-      {/* Left Section (Black Background) - Visible Only on Desktop */}
-      <div className="hidden lg:flex w-1/2 bg-black items-center justify-center rounded-r-full">
+    <div className="flex h-screen w-screen overflow-hidden">
+      {/* Left Section (Animated Background) */}
+      <motion.div
+        initial={{ x: "-100%" }} // Start off-screen left
+        animate={{ x: "0%" }} // Move into view
+        transition={{ duration: 1, ease: "easeOut" }} // Smooth effect
+        className="hidden lg:flex w-[60%] relative bg-white h-full overflow-hidden"
+      >
+        {/* Background Image */}
         <Image
-          src="/images/census-logo.png" // Replace with actual logo path
-          alt="Logo"
-          width={300}
-          height={300}
-          className="mb-4"
+          src="/images/Login BG.png"
+          alt="Background"
+          layout="fill"
+          objectFit="cover"
+          objectPosition="left" // Moves image slightly left
+          className="opacity-50 rounded-r-full shadow-xl"
         />
-      </div>
 
-      {/* Right Section (White Background) */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center bg-white p-6 dark:bg-white">
-        <div className="max-w-sm w-full text-center">
-          {/* Logo for Mobile View (Hidden on Large Screens) */}
+        {/* Logo */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Image
+            src="/images/census-logo.png"
+            alt="Logo"
+            width={350}
+            height={350}
+            className="drop-shadow-lg"
+          />
+        </div>
+      </motion.div>
+
+      {/* Right Section (Login Form - Animates from Right to Left) */}
+      <motion.div
+        initial={{ x: "100%" }} // Start off-screen right
+        animate={{ x: "0%" }} // Move into view
+        transition={{ duration: 1, ease: "easeOut" }} // Smooth effect
+        className="w-full lg:w-[35%] flex items-center justify-center bg-white px-6 dark:bg-white"
+      >
+        <div className="max-w-sm w-full text-center mx-auto">
+          {/* Logo for Mobile View */}
           <div className="lg:hidden flex justify-center mb-6">
             <Image
-              src="/images/census-logo-black.png" // Replace with actual logo path
+              src="/images/census-logo-black.png"
               alt="Mobile Logo"
               width={170}
               height={170}
@@ -98,6 +122,7 @@ export default function AuthForm() {
             Census
           </h2>
 
+          {/* Login Form */}
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {/* Email Input */}
             <div>
@@ -105,7 +130,7 @@ export default function AuthForm() {
                 type="email"
                 placeholder="Email"
                 {...form.register("email")}
-                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-zinc-200 shadow-xl bg-white text-black dark:bg-white dark:text-black"
+                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-zinc-200 shadow-xl bg-white text-black"
               />
             </div>
 
@@ -115,7 +140,7 @@ export default function AuthForm() {
                 type={eye ? "text" : "password"}
                 placeholder="Password"
                 {...form.register("password")}
-                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-zinc-200 shadow-xl bg-white text-black dark:bg-white dark:text-black"
+                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-zinc-200 shadow-xl bg-white text-black"
               />
               <span
                 onClick={() => setEye(!eye)}
@@ -138,7 +163,7 @@ export default function AuthForm() {
               )}
             </button>
 
-            {/* Forgot Password */}
+            {/* Forgot Password Message */}
             <div className="text-center">
               {attempt >= 3 && (
                 <div className="text-red-500">
@@ -146,16 +171,9 @@ export default function AuthForm() {
                 </div>
               )}
             </div>
-
-            {/* Create Account */}
-            {/* <div className="text-center">
-              <button className="bg-gray-200 text-black font-semibold py-2 px-4 rounded-md hover:bg-gray-300">
-                Create new account
-              </button>
-            </div> */}
           </form>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
