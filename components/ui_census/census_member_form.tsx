@@ -112,7 +112,7 @@ const CensusMemberForm = ({
     <div
       className={`${
         minimizeForm ? " max-h-fit" : "h-[50px]"
-      } duration-300 flex flex-col gap-2 overflow-hidden w-5xl px-3 py-2 rounded border-[1px] text-black dark:text-white`}
+      } duration-300 flex flex-col gap-2 overflow-hidden w-5xl px-3 py-2 rounded border-[0.5px] border-gray-500 text-black dark:text-white`}
     >
       <div className="flex items-center justify-between">
         <label className="px-2 rounded bg-slate-200 text-black w-fit ]"></label>
@@ -159,7 +159,7 @@ const CensusMemberForm = ({
                 handleChange(e); // Trigger the existing handleChange for state management
               }
             }}
-            className="border-[0.5px] bg-transparent p-2 rounded w-full max-w-2xl"
+            className="border-[0.5px] border-gray-600 dark:border-gray-100 bg-transparent p-2 rounded w-full max-w-2xl"
           />
         </div>
 
@@ -179,7 +179,7 @@ const CensusMemberForm = ({
                 handleChange(e); // Trigger the existing handleChange for state management
               }
             }}
-            className="border-[0.5px] bg-transparent p-2 rounded w-full max-w-2xl"
+            className="border-[0.5px] border-gray-600 dark:border-gray-100 bg-transparent p-2 rounded w-full max-w-2xl"
           />
         </div>
 
@@ -198,7 +198,7 @@ const CensusMemberForm = ({
                 handleChange(e); // Trigger the existing handleChange for state management
               }
             }}
-            className="border-[0.5px] bg-transparent p-2 rounded w-full max-w-2xl"
+            className="border-[0.5px] border-gray-600 dark:border-gray-100 bg-transparent p-2 rounded w-full max-w-2xl"
           />
         </div>
         <div className="flex flex-col gap-0.5  w-full">
@@ -216,7 +216,7 @@ const CensusMemberForm = ({
                 handleChange(e); // Trigger the existing handleChange for state management
               }
             }}
-            className="border-[0.5px] bg-transparent p-2 rounded w-full max-w-2xl"
+            className="border-[0.5px] border-gray-600 dark:border-gray-100 bg-transparent p-2 rounded w-full max-w-2xl"
           />
         </div>
         <div className="flex flex-col w-full gap-2">
@@ -282,7 +282,7 @@ const CensusMemberForm = ({
             onChange={handleChange}
             value={memberForm.Birthday}
             max={moment().format("YYYY-MM-DD")} // Restrict to today's date
-            className="border-[0.5px] bg-transparent p-2 rounded w-full max-w-2xl uppercase"
+            className="border-[0.5px] border-gray-600 dark:border-gray-100 bg-transparent p-2 rounded w-full max-w-2xl uppercase"
           />
         </div>
 
@@ -295,7 +295,7 @@ const CensusMemberForm = ({
             type="text"
             value={memberForm.Age}
             readOnly
-            className="border-[0.5px] bg-transparent p-2 w-[60px] h-[40px] rounded"
+            className=" bg-transparent p-2 w-[60px] h-[40px] rounded"
           />
         </div>
 
@@ -311,7 +311,7 @@ const CensusMemberForm = ({
               setMemberForm((prev: any) => ({ ...prev, Gender: value }))
             }
           >
-            <SelectTrigger className="w-[180px] k rounded">
+            <SelectTrigger className="w-[180px] border-[0.5px] border-gray-600 dark:border-gray-100 rounded">
               <SelectValue placeholder="Choose Gender" />
             </SelectTrigger>
             <SelectContent className=" ">
@@ -336,7 +336,7 @@ const CensusMemberForm = ({
               }))
             }
           >
-            <SelectTrigger className="w-[180px]  rounded">
+            <SelectTrigger className="w-[180px] border-[0.5px] border-gray-600 dark:border-gray-100  rounded">
               <SelectValue placeholder="Choose Civil Status" />
             </SelectTrigger>
             <SelectContent className=" ">
@@ -520,68 +520,71 @@ const CensusMemberForm = ({
           </>
         )}
 
-<div className="flex flex-col w-full gap-3">
-  <label className="font-semibold flex items-center gap-2">
-    <GiWhiteBook />
-    RELIGION
-  </label>
+        <div className="flex flex-col w-full gap-3">
+          <label className="font-semibold flex items-center gap-2">
+            <GiWhiteBook />
+            RELIGION
+          </label>
 
-  {/* Radio Button Options */}
-  <div className="flex flex-col gap-2">
-    {[
-      { value: "RC", label: "(RC) Roman Catholic" },
-      { value: "INC", label: "(INC) Iglesia Ni Cristo" },
-      { value: "BC", label: "(BC) Bible Baptist Church" },
-      { value: "OTHER", label: "Other" },
-    ].map((religion) => (
-      <label key={religion.value} className="flex items-center gap-2">
-        <input
-          type="radio"
-          name="Religion"
-          value={religion.value}
-          checked={memberForm.Religion?.value === religion.value}
-          onChange={(e) =>
-            setMemberForm((prev: any) => ({
-              ...prev,
-              Religion: {
-                value: e.target.value,
-                other: e.target.value === "OTHER" ? prev.Religion?.other || "" : "", // Reset "other" if not selected
-              },
-            }))
-          }
-          className="w-4 h-4"
-        />
-        {religion.label}
-      </label>
-    ))}
-  </div>
+          {/* Radio Button Options */}
+          <div className="flex flex-col gap-2">
+            {[
+              { value: "RC", label: "(RC) Roman Catholic" },
+              { value: "INC", label: "(INC) Iglesia Ni Cristo" },
+              { value: "BC", label: "(BC) Bible Baptist Church" },
+              { value: "OTHER", label: "Other" },
+            ].map((religion) => (
+              <label key={religion.value} className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="Religion"
+                  value={religion.value}
+                  checked={memberForm.Religion?.value === religion.value}
+                  onChange={(e) =>
+                    setMemberForm((prev: any) => ({
+                      ...prev,
+                      Religion: {
+                        value: e.target.value,
+                        other:
+                          e.target.value === "OTHER"
+                            ? prev.Religion?.other || ""
+                            : "", // Reset "other" if not selected
+                      },
+                    }))
+                  }
+                  className="w-4 h-4"
+                />
+                {religion.label}
+              </label>
+            ))}
+          </div>
 
-  {/* Show "Other" Input if Selected */}
-  {memberForm.Religion?.value === "OTHER" && (
-    <input
-      type="text"
-      name="otherReligion"
-      placeholder="Enter custom religion"
-      value={memberForm.Religion?.other || ""}
-      onChange={(e) => {
-        const validText = e.target.value.replace(/[^a-zA-Z\s]/g, ""); // Remove numbers & special characters
-        setMemberForm((prev: any) => ({
-          ...prev,
-          Religion: { ...prev.Religion, other: validText },
-        }));
-      }}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" && memberForm.Religion?.other.trim()) {
-          setMemberForm((prev: any) => ({
-            ...prev,
-            Religion: { ...prev.Religion, value: prev.Religion.other }, // Save input as selected value
-          }));
-        }
-      }}
-      className="p-2.5 rounded border border-gray-400"
-    />
-  )}
-</div>
+          {/* Show "Other" Input if Selected */}
+          {memberForm.Religion?.value === "OTHER" && (
+            <input
+              type="text"
+              name="otherReligion"
+              placeholder="Enter custom religion"
+              value={memberForm.Religion?.other || ""}
+              onChange={(e) => {
+                const validText = e.target.value.replace(/[^a-zA-Z\s]/g, ""); // Remove numbers & special characters
+                setMemberForm((prev: any) => ({
+                  ...prev,
+                  Religion: { ...prev.Religion, other: validText },
+                }));
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && memberForm.Religion?.other.trim()) {
+                  setMemberForm((prev: any) => ({
+                    ...prev,
+                    Religion: { ...prev.Religion, value: prev.Religion.other }, // Save input as selected value
+                  }));
+                }
+              }}
+              className="p-2.5 rounded border border-gray-400"
+            />
+          )}
+        </div>
         {memberForm.Age >= 5 && (
           <>
             <div className="flex w-full flex-col gap-5 ">
@@ -740,7 +743,7 @@ const CensusMemberForm = ({
               <div className="flex items-center gap-2">
                 <label className="tracking-widest">BCG</label>
                 <Checkbox
-                  className="h-6 w-6"
+                  className="h-6 w-6 border-2 rounded border-gray-400 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-700 transition-colors duration-300"
                   name="BCG"
                   checked={memberForm.Immunization.BCG}
                   onCheckedChange={(value: boolean) =>
@@ -766,7 +769,7 @@ const CensusMemberForm = ({
                       }));
                     }
                   }}
-                  className=" border-[0.5px] bg-transparent p-2 rounded w-[100px] max-w-2xl"
+                  className=" border-[0.5px] border-gray-600 dark:border-gray-100 bg-transparent p-2 rounded w-[100px] max-w-2xl"
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -785,7 +788,7 @@ const CensusMemberForm = ({
                       }));
                     }
                   }}
-                  className=" border-[0.5px] bg-transparent p-2 rounded w-[100px] max-w-2xl"
+                  className=" border-[0.5px] border-gray-600 dark:border-gray-100 bg-transparent p-2 rounded w-[100px] max-w-2xl"
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -804,7 +807,7 @@ const CensusMemberForm = ({
                       }));
                     }
                   }}
-                  className=" border-[0.5px] bg-transparent p-2 rounded w-[100px] max-w-2xl"
+                  className=" border-[0.5px] border-gray-600 dark:border-gray-100 bg-transparent p-2 rounded w-[100px] max-w-2xl"
                 />
               </div>
             </div>
@@ -825,7 +828,7 @@ const CensusMemberForm = ({
                   handleChange(e);
                 }
               }}
-              className="border-[0.5px] bg-transparent p-2 rounded w-full max-w-2xl"
+              className="border-[0.5px] border-gray-600 dark:border-gray-100 bg-transparent p-2 rounded w-full max-w-2xl"
               maxLength={7} // Max 7 characters including the dot
               placeholder="e.g., 408.23"
             />
@@ -882,7 +885,7 @@ const CensusMemberForm = ({
                   target: { name: "Height", value: input },
                 } as React.ChangeEvent<HTMLInputElement>);
               }}
-              className="border-[0.5px] bg-transparent p-2 rounded w-full max-w-2xl"
+              className="border-[0.5px] border-gray-600 dark:border-gray-100 bg-transparent p-2 rounded w-full max-w-2xl"
               maxLength={4} // Allows "7'11"
               placeholder="e.g., 7'1"
             />
