@@ -85,12 +85,13 @@ export default function AuthForm() {
       >
         {/* Background Image with Dynamic Opacity */}
         <Image
-          src="/images/Login BG.png"
+          src="/images/bg-1.png"
           alt="Background"
-          layout="fill"
+          width={3440}
+          height={1440}
           objectFit="cover"
           objectPosition="left"
-          className="rounded-r-full shadow-xl opacity-70 dark:opacity-30"
+          className="rounded-r-full shadow-xl opacity-80 dark:opacity-30 "
         />
 
         {/* Logo */}
