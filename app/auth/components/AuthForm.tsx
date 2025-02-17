@@ -147,6 +147,7 @@ export default function AuthForm() {
               <input
                 type="email"
                 placeholder="Email"
+                {...form.register("email")}
                 className="w-full p-3 border rounded-md focus:ring-2 focus:ring-zinc-200 dark:focus:ring-gray-700 shadow-xl bg-white text-black dark:bg-gray-800 dark:border-gray-600 dark:text-white"
               />
             </div>
@@ -154,19 +155,40 @@ export default function AuthForm() {
             {/* Password Input */}
             <div className="relative">
               <input
-                type="password"
+                type={eye ? "text" : "password"}
                 placeholder="Password"
+                {...form.register("password")}
                 className="w-full p-3 border rounded-md focus:ring-2 focus:ring-zinc-200 dark:focus:ring-gray-700 shadow-xl bg-white text-black dark:bg-gray-800 dark:border-gray-600 dark:text-white"
               />
+              <span
+                onClick={() => setEye(!eye)}
+                className="absolute right-3 top-3 cursor-pointer"
+              >
+                {eye ? <FaEyeSlash /> : <FaEye />}
+              </span>
             </div>
 
             {/* Login Button */}
             <button
               type="submit"
               className="w-full bg-blue-700 text-white font-semibold py-2 rounded-md hover:bg-blue-900 flex items-center justify-center gap-2 dark:bg-blue-800 dark:hover:bg-blue-600"
+              disabled={isPending}
             >
+              {isPending ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                "Log In"
+              )}
               Log In
             </button>
+            {/* Forgot Password */}
+            <div className="text-center">
+              {attempt >= 3 && (
+                <div className="text-red-500">
+                  Forgot your password? Please contact your administrator
+                </div>
+              )}
+            </div>
           </form>
         </div>
       </motion.div>
