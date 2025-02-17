@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { loginWithEmailAndPassword } from "../actions";
 import { AuthTokenResponse } from "@supabase/supabase-js";
 import { FaEyeSlash } from "react-icons/fa";
@@ -68,6 +68,12 @@ export default function AuthForm() {
       }
     });
   }
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const currentTheme = theme === "system" ? systemTheme : theme;
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-white dark:bg-zinc-900">
