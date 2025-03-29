@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image"; // Import Image component
 import { motion } from "framer-motion";
+
 const Page: React.FC = () => {
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);

@@ -10,8 +10,6 @@ import Link from "next/link";
 const CensusGraph = () => {
   const { theme, setTheme } = useTheme();
 
-
-
   return (
     <div className="xl:flex relative w-screen h-screen flex flex-col overflow-y-hidden">
       {/* <FloatingNavbar /> */}
@@ -36,8 +34,9 @@ const CensusGraph = () => {
         <div className="flex xl:w-[50%] w-full relative ">
           <div className="xl:absolute bottom-0 flex flex-col gap-2 ">
             <div
-              className={`h-[3px] w-[100px] p-[2px] ${theme === "light" ? "bg-black" : "bg-white"
-                }`}
+              className={`h-[3px] w-[100px] p-[2px] ${
+                theme === "light" ? "bg-black" : "bg-white"
+              }`}
             />
             Through the PB Census Management System, personnels and officials
             will be able to visualize data population, sort demographics by

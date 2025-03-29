@@ -2,6 +2,7 @@
 import { useTheme } from "next-themes";
 import React from "react";
 import { Card } from "@/components/ui/card";
+
 const BottomDetails = () => {
   const { theme, setTheme } = useTheme();
 
@@ -22,7 +23,7 @@ const BottomDetails = () => {
       map: "https://maps.app.goo.gl/VSRu6Xj8Cf1bKfzb6",
     },
     {
-      title: "Balasing, Santa Maria, Bulaca",
+      title: "Balasing, Santa Maria, Bulacan",
       Src: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Pandi_Church.jpg/760px-Mapcarta.jpg",
       map: "https://maps.app.goo.gl/TzFx2842LW4k6QvS8",
     },
